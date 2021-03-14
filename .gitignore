@@ -6,3 +6,6 @@ tmp/
 temp/
 ormconfig.json
 dist/
+yarn.lock
+package.lock.json
+ormconfig.prod.json

@@ -1,0 +1,20 @@
+[
+    {
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5433,
+      "username": "postgres",
+      "password": "docker",
+      "database": "fastcommerce",
+      "entities": [
+        "./src/modules/**/infra/typeorm/entities/*.ts"
+      ],
+      "migrations": [
+        "./src/shared/infra/typeorm/migrations/*.js"
+      ],
+      "cli": {
+        "migrationsDir": "./src/shared/infra/typeorm/migrations/"
+      }
+    }
+  ]
+  
