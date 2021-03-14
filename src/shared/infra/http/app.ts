@@ -14,9 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/", (request, response) => {
-  response.send(`API do sistema FastCommerce em ambiente de ${process.env.ENVIROMENT}`)
-})
+
 app.use(routes);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
