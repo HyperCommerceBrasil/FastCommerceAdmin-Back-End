@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import CollectionController from '../controllers/collectionsController';
+import CollectionController from '../controllers/CollectionsController';
 
 const collectionController = new CollectionController();
 const collectionRouter = Router();

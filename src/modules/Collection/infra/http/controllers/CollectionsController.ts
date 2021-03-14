@@ -47,3 +47,4 @@ export default class CollectionsController {
     return response.json(collections);
   }
 }
+
