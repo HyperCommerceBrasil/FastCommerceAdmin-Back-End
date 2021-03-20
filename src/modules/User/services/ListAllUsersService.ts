@@ -16,9 +16,10 @@ class ListAllUsersService {
 
     public async execute() {
 
-
         const users = await this.usersRepository.findAllUsers();
         return users;
+
+        
         
 
 

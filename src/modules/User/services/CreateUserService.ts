@@ -23,11 +23,11 @@ class CreateUserService {
     public async execute({name, email, password}: IRequest) {
 
         const userSameName = await this.usersRepository.findByName(name);
-        const userSameEmail = await this.usersRepository.findByName(email);
+        const userSameEmail = await this.usersRepository.findByEmail(email);
 
 
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync("password", salt);
+        const hash = await bcrypt.hash(password, salt);
 
         if(userSameName) {
             throw new AppError("Ja existe um usuário com este NOME :(");
