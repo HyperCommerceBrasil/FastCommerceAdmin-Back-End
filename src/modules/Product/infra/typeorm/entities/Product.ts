@@ -25,7 +25,10 @@ class Product {
   @Column()
   price: number;
 
-  @OneToOne(() => Collection)
+  @Column()
+  trending: boolean;
+
+  @OneToOne(() => Collection, {eager: true})
   @JoinColumn()
   collection: Collection;
 

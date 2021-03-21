@@ -47,6 +47,16 @@ class ProductRepository implements IProductRepository {
     await this.ormRepository.save(data);
     return data;
   }
+
+  public async findTrendingItems(): Promise<Product[]> {
+    const products = await this.ormRepository.find({
+      where: {
+        trending: "true"
+      },
+      
+    }, );
+    return products;
+  }
 }
 
 export default ProductRepository;

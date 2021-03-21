@@ -8,4 +8,5 @@ export default interface IProductRepository {
   search(search: string): Promise<Product[]>;
   deleteById(id: string): Promise<void>;
   update(data: Product): Promise<Product>;
+  findTrendingItems(): Promise<Product[]>;
 }
