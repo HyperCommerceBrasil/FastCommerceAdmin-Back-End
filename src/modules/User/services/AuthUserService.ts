@@ -30,7 +30,7 @@ class CreateUserService {
         }
 
 
-        const isCorrectPassword = await bcrypt.compare('123456', user.password);
+        const isCorrectPassword = await bcrypt.compare(password, user.password);
         console.log(isCorrectPassword);
         if(!isCorrectPassword) {
             throw new AppError("A senha informada está incorreta :(", 401)
