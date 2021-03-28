@@ -6,6 +6,7 @@ const productPublicController = new ProductPublicController();
 const productRouter = Router();
 
 productRouter.get('/', productPublicController.index);
+productRouter.get('/listone/:idProduct', productPublicController.indexOne);
 productRouter.get('/trends', productPublicController.indexTrends);
 
 

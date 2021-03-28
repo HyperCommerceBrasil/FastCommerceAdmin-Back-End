@@ -10,13 +10,17 @@ export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createProduct = container.resolve(CreateProductService);
 
-    const { name, quantity, price, collectionId } = request.body;
+    const { name, quantity, price, collectionId, ean, description, details, price_promotional } = request.body;
 
     const product = await createProduct.execute({
       collectionId,
       name,
       price,
       quantity,
+      description,
+      details,
+      ean,
+      price_promotional
     });
 
     return response.status(201).json(product);

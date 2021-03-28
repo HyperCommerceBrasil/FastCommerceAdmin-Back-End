@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import ListProductService from '../../../services/ListPublicProducts';
 import ListTrendingItems from '../../../services/ListTrendingItems';
+import ListPublicOneProduct from '../../../services/ListPublicOneProduct';
 
 
 export default class ProductController {
@@ -22,8 +23,17 @@ export default class ProductController {
 
     return response.status(200).json(itemTrendings);
 
+  }
 
-    
+
+  public async indexOne(request: Request, response: Response): Promise<Response> {
+      const listProduct =  container.resolve(ListPublicOneProduct);
+
+      const {idProduct} = request.params;
+    const product = await listProduct.execute(idProduct);
+
+    return response.status(200).json(product);
+
   }
 
 

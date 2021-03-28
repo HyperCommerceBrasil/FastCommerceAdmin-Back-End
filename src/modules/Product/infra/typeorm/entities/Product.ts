@@ -38,6 +38,18 @@ class Product {
   images: ProductImage[];
 
   @Column()
+  ean: string;
+
+   @Column()
+   description: string;
+
+  @Column()
+  price_promotional: string;
+
+  @Column()
+  details: string;
+
+  @Column() 
   quantity: number;
 
   @CreateDateColumn()
