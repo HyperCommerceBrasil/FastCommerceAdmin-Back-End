@@ -7,7 +7,7 @@ import publicProductsRouter from '@modules/Product/infra/http/routes/productPubl
 import ensureAuthenticate from '@modules/User/infra/http/middlewares/ensureAuthenticated';
 const routes = Router();
 
-routes.use('/collections', ensureAuthenticate, collectionRouter);
+routes.use('/collections', collectionRouter);
 routes.use('/products',  ensureAuthenticate, productRouter);
 routes.use('/users', userRouter);
 routes.use('/auth', authRouter);
