@@ -57,6 +57,31 @@ class ProductRepository implements IProductRepository {
     }, );
     return products;
   }
+
+
+  public async findByCollectionName(collection: string): Promise<Product[]>{
+    
+    console.log("Coleção: " + collection);
+    const products = await this.ormRepository.find({
+      where: { collection: collection}
+    })
+
+     console.log(products);
+
+
+    return products;
+  }
+
+  public async findByName(name: string): Promise<Product[]> {
+    
+    const products = await this.ormRepository.find({
+      where: { name: name }
+    })
+
+    console.log(products)
+
+    return products;
+  }
 }
 
 export default ProductRepository;

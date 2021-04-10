@@ -6,6 +6,7 @@
   "dependencies": {
     "@types/jsonwebtoken": "^8.5.0",
     "@types/multer": "^1.4.4",
+    "@types/uuid": "^8.3.0",
     "aws-sdk": "^2.753.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -22,7 +23,8 @@
     "pg": "^8.3.3",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.3.0",
-    "typeorm": "^0.2.25"
+    "typeorm": "^0.2.25",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",

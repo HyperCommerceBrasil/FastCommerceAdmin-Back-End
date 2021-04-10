@@ -5,6 +5,8 @@ import ListProductService from '../../../services/ListPublicProducts';
 import ListTrendingItems from '../../../services/ListTrendingItems';
 import ListPublicOneProduct from '../../../services/ListPublicOneProduct';
 
+import SearchProductService from '../../../services/SearchProductService';
+
 
 export default class ProductController {
 
@@ -33,6 +35,23 @@ export default class ProductController {
     const product = await listProduct.execute(idProduct);
 
     return response.status(200).json(product);
+
+  }
+
+   public async search(request: Request, response: Response): Promise<Response> {
+      const searchProductService =  container.resolve(SearchProductService);
+
+      const {product, collection} = request.query;
+
+      const products = await searchProductService.execute({
+        collection: String(collection),
+        productName: String(product)
+      })
+     
+      
+      
+
+    return response.status(200).json(products);
 
   }
 
