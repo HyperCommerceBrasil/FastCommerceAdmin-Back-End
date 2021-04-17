@@ -21,7 +21,7 @@ app.use(routes);
 
 app.use("/files", express.static(path.resolve(__dirname, "..", "..", "..", "..", "tmp")))
 
-console.log("caminho: " + path.resolve(__dirname, "..", "..", "..", "..", "tmp"))
+console.log("caminho: " + path.resolve("..", "..", "..", "..", "tmp"))
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppError) {
