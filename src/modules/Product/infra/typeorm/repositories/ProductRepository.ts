@@ -2,12 +2,15 @@ import IProductRepository from '@modules/Product/repositories/IProductRepository
 import { getRepository, Like, Repository } from 'typeorm';
 import IProductDTO from '../../../dtos/IProductDTO';
 import Product from '../entities/Product';
+import ProductImage from '../entities/ProductImage';
 
 class ProductRepository implements IProductRepository {
   private ormRepository: Repository<Product>;
+  private ormRepositoryImage: Repository<ProductImage>;
 
   constructor() {
     this.ormRepository = getRepository(Product);
+    this.ormRepositoryImage = getRepository(ProductImage);
   }
 
   public async create(data: IProductDTO): Promise<Product> {
@@ -81,6 +84,19 @@ class ProductRepository implements IProductRepository {
     console.log(products)
 
     return products;
+  }
+
+  public async setImageProduct(image: string, product: string): Promise<ProductImage> {
+    
+    const imageProduct = await this.ormRepositoryImage.create({
+      image: image,
+      productId: product
+    })
+
+
+    this.ormRepositoryImage.save(imageProduct);
+
+    return imageProduct;
   }
 }
 

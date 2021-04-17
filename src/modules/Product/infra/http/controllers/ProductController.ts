@@ -6,11 +6,16 @@ import ListProductService from '../../../services/ListProductService';
 import DeleteProductService from '../../../services/DeleteProductService';
 import UpdateProductService from '../../../services/UpdateProductService';
 
+import CreateProductImageService from '../../../services/CreateProductImageService';
+
+import uploadFiles from '@config/multer'
+
 export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createProduct = container.resolve(CreateProductService);
 
     const { name, quantity, price, collectionId, ean, description, details, price_promotional } = request.body;
+ 
 
     const product = await createProduct.execute({
       collectionId,
@@ -59,5 +64,25 @@ export default class ProductController {
     });
 
     return response.status(200).json(product);
+  }
+
+  public async upload(request: Request, response: Response): Promise<Response> {
+
+      const updateImageProduct = container.resolve(CreateProductImageService);
+
+      const image = request.file.filename;
+      const {productId} = request.body;
+      
+
+      const productImage = await updateImageProduct.execute({
+        image: image,
+        product: productId
+      })
+
+
+
+      return response.json({message: "ok", url: request.file.filename, productImage: productImage });
+    
+
   }
 }

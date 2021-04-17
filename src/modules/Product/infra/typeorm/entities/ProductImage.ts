@@ -22,6 +22,9 @@ class ProductImage {
   @ManyToOne(() => Product, product => product.images)
   product: Product;
 
+  @Column()
+  productId: string
+
   @CreateDateColumn()
   created_at: Date;
 

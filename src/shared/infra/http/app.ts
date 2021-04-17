@@ -9,6 +9,7 @@ import './../typeorm';
 import routes from './routes';
 
 import './../../container';
+import '@config/multer';
 
 const app = express();
 
