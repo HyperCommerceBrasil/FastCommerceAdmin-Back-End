@@ -10,6 +10,12 @@ import CreateProductImageService from '../../../services/CreateProductImageServi
 
 import uploadFiles from '@config/multer'
 
+interface FileCustom extends File {
+  location: {
+    url: string;
+  }
+}
+
 export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createProduct = container.resolve(CreateProductService);
@@ -70,12 +76,16 @@ export default class ProductController {
 
       const updateImageProduct = container.resolve(CreateProductImageService);
 
-      const image = request.file.filename;
+      const {location: url = ""} = request.file as Express.MulterS3.File;
+      const urlLocal = process.env.API_URL + "/files/" + request.file.filename;
+
+
+      console.log("Image:" + url)
       const {productId} = request.body;
       
 
       const productImage = await updateImageProduct.execute({
-        image: image,
+        image: process.env.STORAGE_TYPE === 's3' ? url : urlLocal,
         product: productId
       })
 
