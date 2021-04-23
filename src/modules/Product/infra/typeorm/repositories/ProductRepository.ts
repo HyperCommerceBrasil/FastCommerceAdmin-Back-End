@@ -54,49 +54,53 @@ class ProductRepository implements IProductRepository {
   public async findTrendingItems(): Promise<Product[]> {
     const products = await this.ormRepository.find({
       where: {
-        trending: "true"
+        trending: 'true',
       },
-      
-    }, );
+    });
     return products;
   }
 
-
-  public async findByCollectionName(collection: string): Promise<Product[]>{
-    
-    console.log("Coleção: " + collection);
+  public async findByCollectionName(collection: string): Promise<Product[]> {
+    console.log('Coleção: ' + collection);
     const products = await this.ormRepository.find({
-      where: { collection: collection}
-    })
+      where: { collection: collection },
+    });
 
-     console.log(products);
-
+    console.log(products);
 
     return products;
   }
 
   public async findByName(name: string): Promise<Product[]> {
-    
     const products = await this.ormRepository.find({
-      where: { name: name }
-    })
-
-    console.log(products)
+      where: { name: name },
+    });
 
     return products;
   }
 
-  public async setImageProduct(image: string, product: string): Promise<ProductImage> {
-    
+  public async setImageProduct(
+    image: string,
+    product: string,
+  ): Promise<ProductImage> {
     const imageProduct = await this.ormRepositoryImage.create({
       image: image,
-      productId: product
-    })
-
+      productId: product,
+    });
 
     this.ormRepositoryImage.save(imageProduct);
 
     return imageProduct;
+  }
+
+  public async findActiveProducts(): Promise<Product[]> {
+    const products = await this.ormRepository.find({
+      where: {
+        is_active: true,
+      },
+    });
+
+    return products;
   }
 }
 

@@ -8,20 +8,30 @@ import UpdateProductService from '../../../services/UpdateProductService';
 
 import CreateProductImageService from '../../../services/CreateProductImageService';
 
-import uploadFiles from '@config/multer'
+import uploadFiles from '@config/multer';
 
 interface FileCustom extends File {
   location: {
     url: string;
-  }
+  };
 }
 
 export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createProduct = container.resolve(CreateProductService);
 
-    const { name, quantity, price, collectionId, ean, description, details, price_promotional } = request.body;
- 
+    const {
+      name,
+      quantity,
+      price,
+      collectionId,
+      ean,
+      description,
+      details,
+      price_promotional,
+      is_active,
+      trending,
+    } = request.body;
 
     const product = await createProduct.execute({
       collectionId,
@@ -31,7 +41,9 @@ export default class ProductController {
       description,
       details,
       ean,
-      price_promotional
+      price_promotional,
+      trending,
+      is_active,
     });
 
     return response.status(201).json(product);
@@ -59,7 +71,7 @@ export default class ProductController {
     const updateProduct = container.resolve(UpdateProductService);
 
     const { id } = request.params;
-    const { name, price, quantity, collectionId } = request.body;
+    const { name, price, quantity, collectionId, trending } = request.body;
 
     const product = await updateProduct.execute({
       collectionId,
@@ -73,26 +85,23 @@ export default class ProductController {
   }
 
   public async upload(request: Request, response: Response): Promise<Response> {
+    const updateImageProduct = container.resolve(CreateProductImageService);
 
-      const updateImageProduct = container.resolve(CreateProductImageService);
+    const { location: url = '' } = request.file as Express.MulterS3.File;
+    const urlLocal = process.env.API_URL + '/files/' + request.file.filename;
 
-      const {location: url = ""} = request.file as Express.MulterS3.File;
-      const urlLocal = process.env.API_URL + "/files/" + request.file.filename;
+    console.log('Image:' + url);
+    const { productId } = request.body;
 
+    const productImage = await updateImageProduct.execute({
+      image: process.env.STORAGE_TYPE === 's3' ? url : urlLocal,
+      product: productId,
+    });
 
-      console.log("Image:" + url)
-      const {productId} = request.body;
-      
-
-      const productImage = await updateImageProduct.execute({
-        image: process.env.STORAGE_TYPE === 's3' ? url : urlLocal,
-        product: productId
-      })
-
-
-
-      return response.json({message: "ok", url: request.file.filename, productImage: productImage });
-    
-
+    return response.json({
+      message: 'ok',
+      url: request.file.filename,
+      productImage: productImage,
+    });
   }
 }

@@ -7,6 +7,8 @@ export default interface IProductDTO {
   details: string;
   ean: string;
   price_promotional: string;
+  is_active: boolean;
   description: string;
   collection: Collection;
+  trending: boolean;
 }

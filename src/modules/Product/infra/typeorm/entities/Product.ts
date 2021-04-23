@@ -23,12 +23,15 @@ class Product {
   name: string;
 
   @Column()
+  is_active: boolean;
+
+  @Column()
   price: number;
 
   @Column()
   trending: boolean;
 
-  @OneToOne(() => Collection, {eager: true})
+  @OneToOne(() => Collection, { eager: true })
   @JoinColumn()
   collection: Collection;
 
@@ -40,8 +43,8 @@ class Product {
   @Column()
   ean: string;
 
-   @Column()
-   description: string;
+  @Column()
+  description: string;
 
   @Column()
   price_promotional: string;
@@ -49,7 +52,7 @@ class Product {
   @Column()
   details: string;
 
-  @Column() 
+  @Column()
   quantity: number;
 
   @CreateDateColumn()

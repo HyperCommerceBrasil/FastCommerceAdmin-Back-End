@@ -10,7 +10,7 @@ class CreateProductService {
   ) {}
 
   public async execute(): Promise<Product[]> {
-    const products = await this.productsRepository.findAll();
+    const products = await this.productsRepository.findActiveProducts();
 
     return products;
   }
