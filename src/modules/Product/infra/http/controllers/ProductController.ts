@@ -10,12 +10,6 @@ import CreateProductImageService from '../../../services/CreateProductImageServi
 
 import uploadFiles from '@config/multer';
 
-interface FileCustom extends File {
-  location: {
-    url: string;
-  };
-}
-
 export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createProduct = container.resolve(CreateProductService);
