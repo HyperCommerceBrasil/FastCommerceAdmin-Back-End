@@ -44,6 +44,13 @@ class ProductRepository implements IProductRepository {
 
   public async deleteById(id: string): Promise<void> {
     await this.ormRepository.delete(id);
+    const images = await this.ormRepositoryImage.find({
+      where: {
+        productId: id,
+      },
+    });
+
+    await this.ormRepositoryImage.remove(images);
   }
 
   public async update(data: Product): Promise<Product> {
@@ -55,6 +62,7 @@ class ProductRepository implements IProductRepository {
     const products = await this.ormRepository.find({
       where: {
         trending: 'true',
+        is_active: true,
       },
     });
     return products;
