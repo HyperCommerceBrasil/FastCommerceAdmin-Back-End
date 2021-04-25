@@ -11,5 +11,11 @@ export default interface IProductRepository {
   deleteById(id: string): Promise<void>;
   update(data: Product): Promise<Product>;
   findTrendingItems(): Promise<Product[]>;
-  setImageProduct(image: string, product: string): Promise<ProductImage>;
+  findImagesProduct(productId: string): Promise<ProductImage[]>;
+  setImageProduct(
+    image: string,
+    product: string,
+    key: string,
+  ): Promise<ProductImage>;
+  deleteImageProduct(images: ProductImage[]): Promise<void>;
 }

@@ -90,10 +90,12 @@ class ProductRepository implements IProductRepository {
   public async setImageProduct(
     image: string,
     product: string,
+    key: string,
   ): Promise<ProductImage> {
     const imageProduct = await this.ormRepositoryImage.create({
-      image: image,
+      image,
       productId: product,
+      key,
     });
 
     this.ormRepositoryImage.save(imageProduct);
@@ -109,6 +111,20 @@ class ProductRepository implements IProductRepository {
     });
 
     return products;
+  }
+
+  public async findImagesProduct(productId: string): Promise<ProductImage[]> {
+    const images = await this.ormRepositoryImage.find({
+      where: {
+        productId: productId,
+      },
+    });
+
+    return images;
+  }
+
+  public async deleteImageProduct(images: ProductImage[]): Promise<void> {
+    await this.ormRepositoryImage.remove(images);
   }
 }
 

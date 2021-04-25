@@ -6,8 +6,9 @@ import IProductRepository from '../repositories/IProductRepository';
 import ProductImage from '../infra/typeorm/entities/ProductImage';
 
 interface IRequest {
-    image: string;
-    product: string;
+  image: string;
+  product: string;
+  key: string;
 }
 
 @injectable()
@@ -15,19 +16,21 @@ class CreateProductService {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductRepository,
-
   ) {}
 
   public async execute({
     product,
-    image
+    image,
+    key,
   }: IRequest): Promise<ProductImage> {
-
-    const productImage = this.productsRepository.setImageProduct(image, product);
-
+    console.log(key);
+    const productImage = this.productsRepository.setImageProduct(
+      image,
+      product,
+      key,
+    );
 
     return productImage;
-
   }
 }
 

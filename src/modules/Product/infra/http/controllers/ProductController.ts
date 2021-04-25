@@ -81,7 +81,14 @@ export default class ProductController {
   public async upload(request: Request, response: Response): Promise<Response> {
     const updateImageProduct = container.resolve(CreateProductImageService);
 
-    const { location: url = '' } = request.file as Express.MulterS3.File;
+    const {
+      location: url = '',
+      filename,
+      key,
+    } = request.file as Express.MulterS3.File;
+
+    console.log(request.file);
+
     const urlLocal = process.env.API_URL + '/files/' + request.file.filename;
 
     console.log('Image:' + url);
@@ -90,6 +97,7 @@ export default class ProductController {
     const productImage = await updateImageProduct.execute({
       image: process.env.STORAGE_TYPE === 's3' ? url : urlLocal,
       product: productId,
+      key: filename || key,
     });
 
     return response.json({

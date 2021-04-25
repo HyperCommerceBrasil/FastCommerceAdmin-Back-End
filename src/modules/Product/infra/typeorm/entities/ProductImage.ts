@@ -23,7 +23,10 @@ class ProductImage {
   product: Product;
 
   @Column()
-  productId: string
+  productId: string;
+
+  @Column()
+  key: string;
 
   @CreateDateColumn()
   created_at: Date;
