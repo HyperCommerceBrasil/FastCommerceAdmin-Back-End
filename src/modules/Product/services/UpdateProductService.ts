@@ -9,6 +9,11 @@ interface IRequest {
   name: string;
   quantity: number;
   price: number;
+  ean: string;
+  is_active: boolean;
+  trending: boolean;
+  price_promotional: string;
+  details: string;
   collectionId: string;
 }
 
@@ -28,6 +33,11 @@ class CreateProductService {
     price,
     quantity,
     collectionId,
+    details,
+    ean,
+    is_active,
+    price_promotional,
+    trending,
   }: IRequest): Promise<Product> {
     const product = await this.productsRepository.findById(id);
 
@@ -41,6 +51,11 @@ class CreateProductService {
     product.name = name;
     product.price = price;
     product.quantity = quantity;
+    product.ean = ean;
+    product.is_active = is_active;
+    product.price_promotional = price_promotional;
+    product.trending = trending;
+    product.details = details;
 
     await this.productsRepository.update(product);
 

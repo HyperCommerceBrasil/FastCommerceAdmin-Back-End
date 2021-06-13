@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import CreateProductService from '../../../services/CreateProductService';
 import ListProductService from '../../../services/ListProductService';
+import ListOneProduct from '../../../services/ListOneProduct';
 import DeleteProductService from '../../../services/DeleteProductService';
 import UpdateProductService from '../../../services/UpdateProductService';
 
@@ -51,6 +52,19 @@ export default class ProductController {
     return response.status(200).json(products);
   }
 
+  public async indexOne(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listOneProduct = container.resolve(ListOneProduct);
+
+    const { id } = request.params;
+
+    const product = await listOneProduct.execute(id);
+
+    return response.status(200).json(product);
+  }
+
   public async delete(request: Request, response: Response): Promise<Response> {
     const deleteProduct = container.resolve(DeleteProductService);
 
@@ -65,7 +79,17 @@ export default class ProductController {
     const updateProduct = container.resolve(UpdateProductService);
 
     const { id } = request.params;
-    const { name, price, quantity, collectionId, trending } = request.body;
+    const {
+      name,
+      price,
+      quantity,
+      collectionId,
+      trending,
+      details,
+      is_active,
+      ean,
+      price_promotional,
+    } = request.body;
 
     const product = await updateProduct.execute({
       collectionId,
@@ -73,6 +97,11 @@ export default class ProductController {
       name,
       price,
       quantity,
+      details,
+      ean,
+      is_active,
+      trending,
+      price_promotional,
     });
 
     return response.status(200).json(product);

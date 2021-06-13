@@ -9,9 +9,13 @@ const productRouter = Router();
 
 productRouter.post('/', productController.create);
 productRouter.get('/', productController.index);
-productRouter.get('/', productController.index);
+productRouter.get('/listone/:id', productController.indexOne);
 productRouter.delete('/:id', productController.delete);
 productRouter.put('/:id', productController.update);
-productRouter.post('/upload/image', multer(multerConfig).single("productImage"), productController.upload);
+productRouter.post(
+  '/upload/image',
+  multer(multerConfig).single('productImage'),
+  productController.upload,
+);
 
 export default productRouter;
