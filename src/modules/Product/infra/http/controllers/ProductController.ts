@@ -116,8 +116,6 @@ export default class ProductController {
       key,
     } = request.file as Express.MulterS3.File;
 
-    console.log(request.file);
-
     const urlLocal = process.env.API_URL + '/files/' + request.file.filename;
 
     console.log('Image:' + url);

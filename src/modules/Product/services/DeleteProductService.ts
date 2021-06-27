@@ -16,17 +16,20 @@ class DeleteProductService {
 
     if (images) {
       if (process.env.STORAGE_TYPE === 's3') {
-        s3.deleteObject(
-          {
-            Bucket: process.env.BUCKET_NAME || '',
-            Key: images[0].key,
-          },
-          err => {
-            console.log(err);
-          },
-        );
+        if (images.length >= 0) {
+          s3.deleteObject(
+            {
+              Bucket: process.env.BUCKET_NAME || '',
+              Key: images[0].key,
+            },
+            err => {
+              console.log(err);
+            },
+          );
+
+          await this.productsRepository.deleteImageProduct(images);
+        }
       }
-      await this.productsRepository.deleteImageProduct(images);
       await this.productsRepository.deleteById(idProduct);
     }
   }

@@ -15,6 +15,7 @@ productRouter.put('/:id', productController.update);
 productRouter.post(
   '/upload/image',
   multer(multerConfig).single('productImage'),
+
   productController.upload,
 );
 
