@@ -1,5 +1,3 @@
-
-
 import { NextFunction, Response, Request } from 'express';
 import AppError from '@shared/errors/AppError';
 import { verify } from 'jsonwebtoken';
@@ -19,20 +17,21 @@ export default async function ensureAuthenticate(
     const authHeader = request.headers.authorization;
 
     if (!authHeader) {
-      throw new AppError('JWT is missing', 401);
+      throw new AppError('Cliente não autenticado', 401);
     }
 
     const [, token] = authHeader.split(' ');
 
-    const decoded = await verify(token, authConfig.privateKey);
+    const decoded = await verify(token, process.env.PRIVATE_KEY_CUSTOMER || '');
 
     const { sub } = decoded as ITokenPayload;
-    request.user = {
+    console.log(decoded);
+    request.customer = {
       id: sub,
     };
 
     return next();
   } catch (err) {
-    throw new AppError('Invalid JWT Token', 401);
+    throw new AppError('Cliente não autenticado', 401);
   }
 }
