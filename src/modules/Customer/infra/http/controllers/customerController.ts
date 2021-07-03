@@ -26,7 +26,7 @@ export default class UserController {
   public async update(request: Request, response: Response): Promise<Response> {
     const updateCustomer = container.resolve(UpdateCustomerService);
 
-    const id = request.headers.customerid;
+    const id = request.customer.id;
     const { name, email, cpf, birthdate } = request.body;
 
     const customer = await updateCustomer.execute({
