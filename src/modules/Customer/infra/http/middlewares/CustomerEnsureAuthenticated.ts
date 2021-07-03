@@ -7,6 +7,7 @@ interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
+  id: string;
 }
 export default async function ensureAuthenticate(
   request: Request,
@@ -24,10 +25,10 @@ export default async function ensureAuthenticate(
 
     const decoded = await verify(token, process.env.PRIVATE_KEY_CUSTOMER || '');
 
-    const { sub } = decoded as ITokenPayload;
-    console.log(decoded);
+    const { id } = decoded as ITokenPayload;
+
     request.customer = {
-      id: sub,
+      id: id,
     };
 
     return next();

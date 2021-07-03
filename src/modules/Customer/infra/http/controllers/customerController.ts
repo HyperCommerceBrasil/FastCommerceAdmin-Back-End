@@ -27,6 +27,7 @@ export default class UserController {
     const updateCustomer = container.resolve(UpdateCustomerService);
 
     const id = request.customer.id;
+    // console.log(request.customer);
     const { name, email, cpf, birthdate } = request.body;
 
     const customer = await updateCustomer.execute({

@@ -11,7 +11,7 @@ const authCustomerController = new AuthCustomerController();
 const customerRouter = Router();
 
 customerRouter.post('/', customerController.create);
-customerRouter.put('/', customerController.update);
+customerRouter.put('/', customerEnsureAuthenticate, customerController.update);
 customerRouter.post('/auth', authCustomerController.login);
 customerRouter.get('/', customerEnsureAuthenticate, customerController.index);
 
