@@ -1,8 +1,12 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import IUsersRepository from '../repositories/ICustomersRepository';
+import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import ICustomersRepository from '../repositories/ICustomersRepository';
+import Mailer from '@config/email/mailConfig';
+import handlebars from 'handlebars';
+import fs from 'fs';
 
 interface IRequest {
   name: string;
@@ -36,6 +40,31 @@ class CreateUserService {
       birthdate,
       cpf,
     });
+
+    const pathTemplate = fs
+      .readFileSync(
+        '/home/thalesmorais/develop/fastcommerce/FastCommerceAdmin-Back-End/src/config/email/templates/welcomeuser.hbs',
+      )
+      .toString('utf-8');
+
+    const templateParse = handlebars.compile(pathTemplate);
+    const emailHTML = templateParse({
+      username: customer.name,
+    });
+
+    const mailer = await Mailer();
+    const infoMail = await mailer.sendMail({
+      to: customer.email,
+      from: process.env.EMAIL_USER || 'equipe@fastcommerce.com.br',
+      subject: `Bem Vindo ${customer.name}`,
+      html: emailHTML,
+    });
+
+    if (!infoMail.messageId) {
+      throw Error('Não foi possivel completar o cadastro');
+    }
+    console.log('Message sent: %s', infoMail.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(infoMail));
 
     return customer;
   }
