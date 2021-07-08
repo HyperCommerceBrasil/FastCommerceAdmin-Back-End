@@ -9,8 +9,9 @@ class ListAllCustomersService {
     private customersRepository: ICustomersRepository,
   ) {}
 
-  public async execute() {
-    const customers = await this.customersRepository.findAllCustomers();
+  public async execute(page: number) {
+    console.log(page);
+    const customers = await this.customersRepository.findAllCustomers(page);
 
     return customers;
   }

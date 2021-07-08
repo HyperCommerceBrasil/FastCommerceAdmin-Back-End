@@ -59,7 +59,9 @@ export default class UserController {
   ): Promise<Response> {
     const listAllCustomers = container.resolve(ListAllCustomers);
 
-    const customers = await listAllCustomers.execute();
+    const { page } = request.query;
+
+    const customers = await listAllCustomers.execute(Number(page));
 
     return response.status(201).json(customers);
   }
