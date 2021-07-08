@@ -12,9 +12,17 @@ import IUsersRepository from '@modules/User/repositories/IUsersRepository';
 import CustomersRepository from '@modules/Customer/infra/typeorm/repositories/CustomersRepository';
 import ICustomersRepository from '@modules/Customer/repositories/ICustomersRepository';
 
+import BlacklistRepositorie from './../infra/typeorm/repositories/BlacklistRepositorie';
+import IBlacklistRepositorie from './../repositories/IBlacklistRepositorie';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IBlacklistRepositorie>(
+  'BlacklistRepository',
+  BlacklistRepositorie,
 );
 
 container.registerSingleton<ICustomersRepository>(
