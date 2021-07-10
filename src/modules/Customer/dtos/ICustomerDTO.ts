@@ -3,5 +3,5 @@ export default interface ICustomerDTO {
   password: string;
   email: string;
   cpf: string;
-  birthDate: Date;
+  birthdate: Date;
 }

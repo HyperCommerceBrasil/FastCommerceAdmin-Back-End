@@ -3,6 +3,8 @@ import { inject, injectable } from 'tsyringe';
 import IUsersRepository from '../repositories/ICustomersRepository';
 import bcrypt from 'bcryptjs';
 import ICustomersRepository from '../repositories/ICustomersRepository';
+
+import IBlacklistRepositorie from '@shared/repositories/IBlacklistRepositorie';
 import jwt from 'jsonwebtoken';
 
 interface IRequest {
@@ -15,6 +17,9 @@ class CreateUserService {
   constructor(
     @inject('CustomersRepository')
     private customersRepository: ICustomersRepository,
+
+    @inject('BlacklistRepository')
+    private blacklistRepository: IBlacklistRepositorie,
   ) {}
 
   public async execute({ email, password }: IRequest) {

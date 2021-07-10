@@ -5,6 +5,8 @@ import UpdateCustomerService from '../../../services/UpdateCustomerService';
 
 import ListCustomerService from '../../../services/ListDataClientService';
 
+import ListAllCustomers from '../../../services/ListAllCustomers';
+
 import { verify } from 'jsonwebtoken';
 
 export default class UserController {
@@ -49,5 +51,16 @@ export default class UserController {
     });
 
     return response.status(201).json(customer);
+  }
+
+  public async listAll(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listAllCustomers = container.resolve(ListAllCustomers);
+
+    const customers = await listAllCustomers.execute();
+
+    return response.status(201).json(customers);
   }
 }
