@@ -6,6 +6,7 @@ import Mailer from '@config/email/mailConfig';
 import handlebars from 'handlebars';
 import fs from 'fs';
 import jsonwebtoken from 'jsonwebtoken';
+import path from 'path';
 
 interface IRequest {
   email: string;
@@ -34,10 +35,21 @@ class CreateUserService {
       { expiresIn: '1d' },
     );
 
+    console.log(__dirname);
+
     const mailer = await Mailer();
     const pathTemplate = fs
       .readFileSync(
-        '/home/thalesmorais/develop/fastcommerce/FastCommerceAdmin-Back-End/src/config/email/templates/resetpassword.hbs',
+        path.join(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          'config',
+          'email',
+          'templates',
+          'resetpassword.hbs',
+        ),
       )
       .toString('utf-8');
 

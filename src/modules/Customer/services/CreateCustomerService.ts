@@ -7,6 +7,7 @@ import ICustomersRepository from '../repositories/ICustomersRepository';
 import Mailer from '@config/email/mailConfig';
 import handlebars from 'handlebars';
 import fs from 'fs';
+import path from 'path';
 
 interface IRequest {
   name: string;
@@ -43,7 +44,16 @@ class CreateUserService {
 
     const pathTemplate = fs
       .readFileSync(
-        '/home/thalesmorais/develop/fastcommerce/FastCommerceAdmin-Back-End/src/config/email/templates/welcomeuser.hbs',
+        path.join(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          'config',
+          'email',
+          'templates',
+          'welcomeuser.hbs',
+        ),
       )
       .toString('utf-8');
 
