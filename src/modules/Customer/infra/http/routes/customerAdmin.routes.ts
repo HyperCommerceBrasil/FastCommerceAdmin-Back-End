@@ -10,5 +10,6 @@ const customerController = new CustomerController();
 const customerRouter = Router();
 
 customerRouter.get('/', customerController.listAll);
+customerRouter.get('/:idCustomer', customerController.listOne);
 
 export default customerRouter;

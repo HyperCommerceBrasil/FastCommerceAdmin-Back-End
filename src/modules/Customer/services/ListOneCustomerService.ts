@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 
 import ICustomersRepository from '../repositories/ICustomersRepository';
@@ -9,17 +10,13 @@ class ListAllCustomersService {
     private customersRepository: ICustomersRepository,
   ) {}
 
-  public async execute(page: number) {
-    console.log(page);
-    const customers = await this.customersRepository.findAllCustomers(page);
+  public async execute(id: string) {
+    const customer = await this.customersRepository.findById(id);
 
-    const pageInitials = customers[1] / 8;
-
-    const pages = Math.trunc(pageInitials) + 1;
-
-    console.log(pages);
-
-    return { customers: customers[0], totalPages: pages };
+    if (!customer) {
+      throw new AppError('Customer informado não encontrado :(');
+    }
+    return customer;
   }
 }
 

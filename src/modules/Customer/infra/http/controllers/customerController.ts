@@ -7,6 +7,8 @@ import ListCustomerService from '../../../services/ListDataClientService';
 
 import ListAllCustomers from '../../../services/ListAllCustomers';
 
+import ListOneCustomerService from '../../../services/ListOneCustomerService';
+
 import { verify } from 'jsonwebtoken';
 
 export default class UserController {
@@ -64,5 +66,18 @@ export default class UserController {
     const customers = await listAllCustomers.execute(Number(page));
 
     return response.status(201).json(customers);
+  }
+
+  public async listOne(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listOneCustomers = container.resolve(ListOneCustomerService);
+
+    const { idCustomer } = request.params;
+
+    const customer = await listOneCustomers.execute(idCustomer);
+
+    return response.status(200).json(customer);
   }
 }
