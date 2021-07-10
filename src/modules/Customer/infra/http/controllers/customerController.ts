@@ -9,6 +9,8 @@ import ListAllCustomers from '../../../services/ListAllCustomers';
 
 import ListOneCustomerService from '../../../services/ListOneCustomerService';
 
+import UpdateOneCustomerService from '../../../services/UpdateOneCustomerService';
+
 import { verify } from 'jsonwebtoken';
 
 export default class UserController {
@@ -77,6 +79,27 @@ export default class UserController {
     const { idCustomer } = request.params;
 
     const customer = await listOneCustomers.execute(idCustomer);
+
+    return response.status(200).json(customer);
+  }
+
+  public async updateOne(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const updateOne = container.resolve(UpdateOneCustomerService);
+
+    const { idCustomer } = request.params;
+
+    const { email, cpf, name, birthdate } = request.body;
+
+    const customer = await updateOne.execute({
+      birthdate,
+      cpf,
+      email,
+      name,
+      id: idCustomer,
+    });
 
     return response.status(200).json(customer);
   }

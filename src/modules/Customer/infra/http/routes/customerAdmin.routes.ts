@@ -12,4 +12,6 @@ const customerRouter = Router();
 customerRouter.get('/', customerController.listAll);
 customerRouter.get('/:idCustomer', customerController.listOne);
 
+customerRouter.put('/:idCustomer', customerController.updateOne);
+
 export default customerRouter;
