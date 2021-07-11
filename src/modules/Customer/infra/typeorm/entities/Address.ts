@@ -2,16 +2,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import Address from './Address';
+import Customer from './Customer';
 
-@Entity('customers')
-class Customer {
+@Entity('adresses')
+class Address {
   @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn()
   id: string;
@@ -19,22 +19,23 @@ class Customer {
   @Column()
   name: string;
 
-  @Column()
-  password: string;
-
-  @OneToMany(() => Address, address => address.customer, {
-    eager: true,
-  })
-  adresses: Address[];
+  @ManyToOne(() => Customer, customer => customer.adresses)
+  customer: Customer;
 
   @Column()
-  email: string;
+  cep: string;
 
   @Column()
-  cpf: string;
+  city: string;
 
   @Column()
-  birthdate: Date;
+  street: string;
+
+  @Column()
+  district: string;
+
+  @Column()
+  number: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -43,4 +44,4 @@ class Customer {
   updated_at: Date;
 }
 
-export default Customer;
+export default Address;
