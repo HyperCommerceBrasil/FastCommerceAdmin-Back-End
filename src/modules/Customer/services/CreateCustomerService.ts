@@ -26,6 +26,7 @@ class CreateUserService {
 
   public async execute({ name, email, password, cpf, birthdate }: IRequest) {
     const customerSameEmail = await this.customersRepository.findByEmail(email);
+    const customerSameCpf = await this.customersRepository.findByCpf(cpf);
 
     const salt = bcrypt.genSaltSync(10);
     const hash = await bcrypt.hash(password, salt);
@@ -34,6 +35,9 @@ class CreateUserService {
       throw new AppError('Ja existe um usuário com este EMAIL :(');
     }
 
+    if (customerSameCpf) {
+      throw new AppError('Ja existe um usuário com este CPF :(');
+    }
     const customer = await this.customersRepository.create({
       email,
       name,

@@ -7,6 +7,6 @@ export default interface ICustomersRepository {
   findByEmail(email: string): Promise<Customer | undefined>;
   findByCpf(cpf: string): Promise<Customer | undefined>;
   findById(id: string): Promise<Customer | undefined>;
-  findAllCustomers(): Promise<Customer[]>;
+  findAllCustomers(page: number): Promise<[Customer[], number]>;
   saveCustomer(customer: Customer): Promise<void>;
 }

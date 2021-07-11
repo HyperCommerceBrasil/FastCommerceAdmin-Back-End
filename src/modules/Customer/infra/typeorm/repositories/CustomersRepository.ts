@@ -55,8 +55,14 @@ class CustomersRepository implements ICustomersRepository {
     return customer;
   }
 
-  public async findAllCustomers(): Promise<Customer[]> {
-    const customer = await this.ormRepository.find();
+  public async findAllCustomers(page: number): Promise<[Customer[], number]> {
+    const skipIndex = (page - 1) * 8;
+
+    console.log(skipIndex);
+    const customer = await this.ormRepository.findAndCount({
+      skip: skipIndex < 0 ? 0 : skipIndex,
+      take: 8,
+    });
 
     return customer;
   }
