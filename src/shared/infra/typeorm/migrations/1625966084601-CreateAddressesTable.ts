@@ -30,6 +30,11 @@ export default class CreateAddressesTable1625966084601
             isNullable: true,
           },
           {
+            name: 'addressDefault',
+            type: 'boolean',
+            isNullable: true,
+          },
+          {
             name: 'city',
             type: 'varchar',
             isNullable: true,

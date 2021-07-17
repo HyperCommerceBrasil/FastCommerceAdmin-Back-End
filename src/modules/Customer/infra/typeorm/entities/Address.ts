@@ -26,6 +26,9 @@ class Address {
   cep: string;
 
   @Column()
+  uf: string;
+
+  @Column()
   city: string;
 
   @Column()
@@ -36,6 +39,9 @@ class Address {
 
   @Column()
   number: string;
+
+  @Column()
+  addressDefault: boolean;
 
   @CreateDateColumn()
   created_at: Date;
