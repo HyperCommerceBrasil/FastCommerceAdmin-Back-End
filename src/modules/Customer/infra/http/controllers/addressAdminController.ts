@@ -51,6 +51,8 @@ export default class AddressAdminController {
       number,
     } = request.body;
 
+    console.log(addressId);
+
     const customer = await updateAddress.execute({
       cep,
       city,

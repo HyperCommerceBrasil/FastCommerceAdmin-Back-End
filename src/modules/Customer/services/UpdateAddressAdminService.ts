@@ -39,36 +39,40 @@ class UpdateAddressService {
     addressId,
   }: IRequest) {
     const address = await this.addressRepository.findById(addressId);
-    const customer =
-      (await this.customersRepository.findById(address?.customer.id || '')) ||
-      ({} as Customer);
 
     if (!address) {
       throw new AppError('Endereço não encontrado');
     }
+    const customer =
+      (await this.customersRepository.findById(address.customerId)) ||
+      ({} as Customer);
 
     const addressDefault = customer.adresses.filter(address => {
       return address.addressDefault === true;
     });
 
-    if (addressDefault.length <= 0) {
-      if (!defaultAddress) {
-        throw new AppError('Você precisa ter pelo menos um endereço padrão');
-      }
-      address.addressDefault = defaultAddress;
-    } else {
-      if (addressDefault[0].id === address.id) {
-        address.addressDefault = defaultAddress;
+    if (defaultAddress !== undefined) {
+      if (addressDefault.length <= 0) {
         if (!defaultAddress) {
           throw new AppError('Você precisa ter pelo menos um endereço padrão');
         }
+        address.addressDefault = defaultAddress;
+      } else {
+        if (addressDefault[0].id === address.id) {
+          if (!!!defaultAddress) {
+            console.log('entrou aki');
+            throw new AppError(
+              'Você precisa ter pelo menos um endereço padrão',
+            );
+          }
+          address.addressDefault = defaultAddress;
+        } else {
+          address.addressDefault = defaultAddress;
+          addressDefault[0].addressDefault = !defaultAddress;
+        }
       }
-      address.addressDefault = defaultAddress;
-
-      addressDefault[0].addressDefault = !defaultAddress;
     }
 
-    address.addressDefault = defaultAddress;
     address.cep = cep;
     address.city = city;
     address.district = district;
@@ -76,6 +80,8 @@ class UpdateAddressService {
     address.uf = uf;
     address.street = street;
     address.name = name;
+
+    console.log(address);
 
     await this.addressRepository.save(address);
     await this.addressRepository.save(addressDefault[0]);

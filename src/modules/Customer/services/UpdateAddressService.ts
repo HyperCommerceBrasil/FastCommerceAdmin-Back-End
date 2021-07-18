@@ -62,20 +62,29 @@ class UpdateAddressService {
       throw new AppError('O endereço informado não pertence ao seu usuário :(');
     }
 
-    if (addressDefault.length <= 0) {
-      if (!defaultAddress) {
-        throw new AppError('Você precisa ter pelo menos um endereço padrão');
-      }
-      address.addressDefault = defaultAddress;
-    } else {
-      if (addressDefault[0].id === address.id) {
+    console.log(defaultAddress);
+
+    if (defaultAddress !== undefined) {
+      console.log('entrou aki');
+      if (addressDefault.length <= 0) {
+        if (!defaultAddress) {
+          throw new AppError('Você precisa ter pelo menos um endereço padrão');
+        }
         address.addressDefault = defaultAddress;
+      } else {
+        if (addressDefault[0].id === address.id) {
+          if (!!!defaultAddress) {
+            throw new AppError(
+              'Você precisa ter pelo menos um endereço padrão',
+            );
+          }
+          address.addressDefault = defaultAddress;
+        } else {
+          address.addressDefault = defaultAddress;
+          addressDefault[0].addressDefault = !defaultAddress;
+        }
       }
-      address.addressDefault = defaultAddress;
-
-      addressDefault[0].addressDefault = !defaultAddress;
     }
-
     address.addressDefault = defaultAddress;
     address.cep = cep;
     address.city = city;
@@ -84,6 +93,8 @@ class UpdateAddressService {
     address.uf = uf;
     address.street = street;
     address.name = name;
+
+    console.log(address);
 
     await this.addressRepository.save(address);
     await this.addressRepository.save(addressDefault[0]);

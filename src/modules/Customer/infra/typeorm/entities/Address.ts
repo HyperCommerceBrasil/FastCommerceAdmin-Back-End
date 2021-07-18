@@ -23,6 +23,9 @@ class Address {
   customer: Customer;
 
   @Column()
+  customerId: string;
+
+  @Column()
   cep: string;
 
   @Column()
