@@ -70,7 +70,11 @@ class CreateUserService {
     console.log('Message sent: %s', infoMail.messageId);
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(infoMail));
 
-    return { token: tokenToReset, email: customer.email };
+    return {
+      token: tokenToReset,
+      email: customer.email,
+      emailLink: nodemailer.getTestMessageUrl(infoMail),
+    };
   }
 }
 
