@@ -46,7 +46,7 @@ class ChangePasswordService {
         id: string;
       };
     } catch {
-      throw new AppError('Token expirado ou inválido');
+      throw new AppError('Token expirado ou inválido', 400, 75);
     }
 
     const customer = await this.customersRepository.findByEmail(decoded.email);
