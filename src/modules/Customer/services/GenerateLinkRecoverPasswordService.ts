@@ -56,7 +56,7 @@ class CreateUserService {
     const templateParse = handlebars.compile(pathTemplate);
     const emailHTML = templateParse({
       username: customer.name,
-      linkResetPassword: `https://fastcommerce.thalesmorais.dev/reset_password?token=${tokenToReset}`,
+      linkResetPassword: `https://fastcommerce.thalesmorais.dev/reset-password?token=${tokenToReset}`,
     });
 
     const infoMail = await mailer.sendMail({
