@@ -43,6 +43,15 @@ class UpdateAddressService {
     if (!address) {
       throw new AppError('Endereço não encontrado');
     }
+
+    address.cep = cep;
+    address.city = city;
+    address.district = district;
+    address.number = number;
+    address.uf = uf;
+    address.street = street;
+    address.name = name;
+
     const customer =
       (await this.customersRepository.findById(address.customerId)) ||
       ({} as Customer);
@@ -60,7 +69,6 @@ class UpdateAddressService {
       } else {
         if (addressDefault[0].id === address.id) {
           if (!!!defaultAddress) {
-            console.log('entrou aki');
             throw new AppError(
               'Você precisa ter pelo menos um endereço padrão',
             );
@@ -69,22 +77,12 @@ class UpdateAddressService {
         } else {
           address.addressDefault = defaultAddress;
           addressDefault[0].addressDefault = !defaultAddress;
+          await this.addressRepository.save(addressDefault[0]);
         }
       }
     }
 
-    address.cep = cep;
-    address.city = city;
-    address.district = district;
-    address.number = number;
-    address.uf = uf;
-    address.street = street;
-    address.name = name;
-
-    console.log(address);
-
     await this.addressRepository.save(address);
-    await this.addressRepository.save(addressDefault[0]);
 
     return address;
   }

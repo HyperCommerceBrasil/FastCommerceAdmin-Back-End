@@ -82,6 +82,8 @@ class UpdateAddressService {
         } else {
           address.addressDefault = defaultAddress;
           addressDefault[0].addressDefault = !defaultAddress;
+
+          await this.addressRepository.save(addressDefault[0]);
         }
       }
     }
@@ -97,7 +99,6 @@ class UpdateAddressService {
     console.log(address);
 
     await this.addressRepository.save(address);
-    await this.addressRepository.save(addressDefault[0]);
     return address;
   }
 }

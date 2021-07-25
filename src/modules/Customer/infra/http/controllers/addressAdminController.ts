@@ -41,6 +41,7 @@ export default class AddressAdminController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const updateAddress = container.resolve(UpdateAddressService);
+
     const { addressId } = request.params;
     const {
       cep,
@@ -53,7 +54,7 @@ export default class AddressAdminController {
       number,
     } = request.body;
 
-    console.log(addressId);
+    console.log(street);
 
     const customer = await updateAddress.execute({
       cep,
