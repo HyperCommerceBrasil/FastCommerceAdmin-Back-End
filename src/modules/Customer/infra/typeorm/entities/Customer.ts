@@ -22,9 +22,7 @@ class Customer {
   @Column()
   password: string;
 
-  @OneToMany(() => Address, address => address.customer, {
-    eager: true,
-  })
+  @OneToMany(() => Address, address => address.customer)
   adresses: Address[];
 
   @Column()

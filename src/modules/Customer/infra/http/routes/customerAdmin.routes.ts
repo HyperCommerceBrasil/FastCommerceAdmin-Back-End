@@ -17,5 +17,6 @@ customerRouter.post('/address/:idCustomer', addressAdminController.create);
 
 customerRouter.put('/address/:addressId', addressAdminController.update);
 customerRouter.delete('/address/:addressId', addressAdminController.delete);
+customerRouter.get('/address/:addressId', addressAdminController.getOne);
 
 export default customerRouter;

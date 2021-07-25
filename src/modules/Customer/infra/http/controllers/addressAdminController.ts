@@ -6,6 +6,8 @@ import UpdateAddressService from '../../../services/UpdateAddressAdminService';
 
 import DeleteAddressAdminService from '../../../services/DeleteAddressAdminService';
 
+import ListOneAddressService from '../../../services/ListOneAddressService';
+
 export default class AddressAdminController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createAddress = container.resolve(CreateAddressService);
@@ -80,5 +82,14 @@ export default class AddressAdminController {
     });
 
     return response.status(200).json({});
+  }
+
+  public async getOne(request: Request, response: Response): Promise<Response> {
+    const listAddress = container.resolve(ListOneAddressService);
+    const { addressId } = request.params;
+
+    const address = await listAddress.execute(addressId);
+
+    return response.status(200).json(address);
   }
 }
