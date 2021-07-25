@@ -50,7 +50,12 @@ class CustomersRepository implements ICustomersRepository {
   }
 
   public async findById(id: string): Promise<Customer | undefined> {
-    const customer = await this.ormRepository.findOne(id);
+    const customer = await this.ormRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['adresses'],
+    });
 
     return customer;
   }
