@@ -71,9 +71,7 @@ class CreateUserService {
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(infoMail));
 
     return {
-      token: tokenToReset,
-      email: customer.email,
-      emailLink: nodemailer.getTestMessageUrl(infoMail),
+      emailLink: nodemailer.getTestMessageUrl(infoMail), // remover posteriormente
     };
   }
 }
