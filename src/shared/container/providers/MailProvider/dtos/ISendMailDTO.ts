@@ -8,4 +8,5 @@ export default interface ISendMailDTO {
   from?: IMailContact;
   subject: string;
   template?: string;
+  variables?: { [key: string]: string };
 }

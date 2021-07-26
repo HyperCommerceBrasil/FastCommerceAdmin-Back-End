@@ -1,8 +1,8 @@
 import EtherealMailProvider from './implementations/EtherealMailProvider';
-
+import MailJet from './implementations/MailjetProvider';
 import { container } from 'tsyringe';
 
 export default {
   ethereal: container.resolve(EtherealMailProvider),
-  //   ses: container.resolve(SESMailProvider),
+  mailjet: container.resolve(MailJet),
 };

@@ -1,5 +1,5 @@
 interface IMailCOnfig {
-  driver: 'ethereal';
+  driver: 'ethereal' | 'mailjet';
   defaults: {
     from: {
       name: string;
