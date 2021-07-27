@@ -38,8 +38,8 @@ class CreateUserService {
     this.mailProvider.sendMail({
       subject: 'Alterar Senha',
       to: {
-        email: 'thales.morais21@gmail.com',
-        name: 'Thales Morais',
+        email: customer.email,
+        name: customer.name,
       },
       from: {
         email: 'contato@thalesmorais.dev',
