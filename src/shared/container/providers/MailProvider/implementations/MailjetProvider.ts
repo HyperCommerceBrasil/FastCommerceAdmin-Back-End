@@ -19,6 +19,7 @@ export default class EtherealMailProvider implements IMailProvider {
     from,
     subject,
     Variables,
+    template,
   }: ISendMailDTO): Promise<void> {
     const messages = [
       {
@@ -33,7 +34,7 @@ export default class EtherealMailProvider implements IMailProvider {
           },
         ],
         Subject: subject,
-        TemplateID: 3067554,
+        TemplateID: template,
         TemplateLanguage: true,
         Variables: Variables,
       },
