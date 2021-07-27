@@ -1,5 +1,8 @@
 import { container } from 'tsyringe';
 
+import mailsProvider from './providers/MailProvider';
+import mailConfig from '@config/email/mailConfig';
+
 import CollectionRepository from '@modules/Collection/infra/typeorm/repositories/CollectionRepository';
 import ICollectionRepository from '@modules/Collection/repositories/ICollectionRepository';
 
@@ -17,6 +20,7 @@ import IBlacklistRepositorie from './../repositories/IBlacklistRepositorie';
 
 import AddressRepository from '@modules/Customer/infra/typeorm/repositories/AddressRepository';
 import IAddressRepository from '@modules/Customer/repositories/IAddressRepository';
+import IMailProvider from './providers/MailProvider/models/IMailProvider';
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -46,4 +50,9 @@ container.registerSingleton<ICollectionRepository>(
 container.registerSingleton<IProductRepository>(
   'ProductsRepository',
   ProductRepository,
+);
+
+container.registerInstance<IMailProvider>(
+  'MailProvider',
+  mailsProvider[mailConfig.driver],
 );

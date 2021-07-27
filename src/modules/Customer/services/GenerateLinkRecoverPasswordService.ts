@@ -1,12 +1,9 @@
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import nodemailer from 'nodemailer';
 import ICustomersRepository from '../repositories/ICustomersRepository';
-import Mailer from '@config/email/mailConfig';
-import handlebars from 'handlebars';
-import fs from 'fs';
+
 import jsonwebtoken from 'jsonwebtoken';
-import path from 'path';
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 
 interface IRequest {
   email: string;
@@ -17,6 +14,9 @@ class CreateUserService {
   constructor(
     @inject('CustomersRepository')
     private customersRepository: ICustomersRepository,
+
+    @inject('MailProvider')
+    private mailProvider: IMailProvider,
   ) {}
 
   public async execute({ email }: IRequest) {
@@ -35,44 +35,22 @@ class CreateUserService {
       { expiresIn: '1d' },
     );
 
-    console.log(__dirname);
-
-    const mailer = await Mailer();
-    const pathTemplate = fs
-      .readFileSync(
-        path.join(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          'config',
-          'email',
-          'templates',
-          'resetpassword.hbs',
-        ),
-      )
-      .toString('utf-8');
-
-    const templateParse = handlebars.compile(pathTemplate);
-    const emailHTML = templateParse({
-      username: customer.name,
-      linkResetPassword: `https://fastcommerce.thalesmorais.dev/reset-password?token=${tokenToReset}`,
+    this.mailProvider.sendMail({
+      subject: 'Alterar Senha',
+      to: {
+        email: 'thales.morais21@gmail.com',
+        name: 'Thales Morais',
+      },
+      from: {
+        email: 'contato@thalesmorais.dev',
+        name: 'contato@thalesmorais.dev',
+      },
+      template: 3067554,
+      Variables: {
+        linkreset: `https://fastcommerce.thalesmorais.dev/reset-password?token=${tokenToReset}`,
+      },
     });
-
-    const infoMail = await mailer.sendMail({
-      from: process.env.EMAIL_USER,
-      to: customer.email,
-      subject: 'Resetar a Senha',
-      html: emailHTML,
-      encoding: 'utf-8',
-    });
-
-    console.log('Message sent: %s', infoMail.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(infoMail));
-
-    return {
-      emailLink: nodemailer.getTestMessageUrl(infoMail), // remover posteriormente
-    };
+    return;
   }
 }
 
