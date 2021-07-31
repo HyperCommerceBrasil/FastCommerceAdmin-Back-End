@@ -34,9 +34,7 @@ class ProductRepository implements IProductRepository {
 
   public async search(search: string): Promise<Product[]> {
     const products = this.ormRepository.find({
-      where: {
-        name: Like(`%${search}%`),
-      },
+      where: [{ name: Like(`%${search}%`) }, { ean: Like(`%${search}%`) }],
     });
 
     return products;

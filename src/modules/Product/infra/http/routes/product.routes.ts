@@ -4,11 +4,15 @@ import { Router } from 'express';
 
 import ProductController from '../controllers/ProductController';
 
+import SearchController from '../controllers/SearchController';
+
 const productController = new ProductController();
+const searchController = new SearchController();
 const productRouter = Router();
 
 productRouter.post('/', productController.create);
 productRouter.get('/', productController.index);
+productRouter.get('/search', searchController.search);
 productRouter.get('/listone/:id', productController.indexOne);
 productRouter.delete('/:id', productController.delete);
 productRouter.put('/:id', productController.update);
