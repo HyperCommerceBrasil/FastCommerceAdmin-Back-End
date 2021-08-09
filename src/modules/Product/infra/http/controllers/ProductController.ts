@@ -9,6 +9,9 @@ import UpdateProductService from '../../../services/UpdateProductService';
 
 import CreateProductImageService from '../../../services/CreateProductImageService';
 
+
+import DeleteProductImageService from '../../../services/DeleteProductImageService';
+
 import uploadFiles from '@config/multer';
 
 export default class ProductController {
@@ -118,7 +121,6 @@ export default class ProductController {
 
     const urlLocal = process.env.API_URL + '/files/' + request.file.filename;
 
-    console.log('Image:' + url);
     const { productId } = request.body;
 
     const productImage = await updateImageProduct.execute({
@@ -132,5 +134,16 @@ export default class ProductController {
       url: request.file.filename,
       productImage: productImage,
     });
+  }
+
+
+  public async deleteImage(request: Request, response: Response): Promise<Response> {
+    const deleteImageProduct = container.resolve(DeleteProductImageService);
+
+    const { imageId } = request.params;
+
+     await deleteImageProduct.execute({imageId});
+
+    return response.status(200).json({});
   }
 }
