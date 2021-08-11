@@ -12,6 +12,7 @@ export default interface IProductRepository {
   update(data: Product): Promise<Product>;
   findTrendingItems(): Promise<Product[]>;
   findImagesProduct(productId: string): Promise<ProductImage[]>;
+  findOneImagesProduct(imageId: string): Promise<ProductImage[]>;
   setImageProduct(
     image: string,
     product: string,

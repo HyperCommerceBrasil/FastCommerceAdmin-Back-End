@@ -29,29 +29,6 @@ class CreateProductService {
     image,
     key,
   }: IRequest): Promise<ProductImage> {
-    const ImageExists = await this.productsRepository.findImagesProduct(
-      product,
-    );
-
-    console.log(ImageExists);
-
-    if (ImageExists.length > 0) {
-      console.log('entrou aqui');
-      s3.deleteObject(
-        {
-          Bucket: process.env.BUCKET_NAME || '',
-          Key: ImageExists[0].key,
-        },
-        (err, data) => {
-          if (err) {
-            throw new AppError(
-              'Não foi possivel remover a imagem do produto ! :(',
-            );
-          }
-          this.productsRepository.deleteImageProduct(ImageExists);
-        },
-      );
-    }
     const productImage = this.productsRepository.setImageProduct(
       image,
       product,

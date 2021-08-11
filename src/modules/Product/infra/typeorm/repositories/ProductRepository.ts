@@ -124,6 +124,19 @@ class ProductRepository implements IProductRepository {
   public async deleteImageProduct(images: ProductImage[]): Promise<void> {
     await this.ormRepositoryImage.remove(images);
   }
+
+  public async findOneImagesProduct(imageId:string): Promise<ProductImage[]> {
+    const productImage = await this.ormRepositoryImage.find({
+      where: {
+        id: imageId
+      }
+    })
+
+
+    return productImage;
+  }
+
+  
 }
 
 export default ProductRepository;

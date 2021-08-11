@@ -16,6 +16,7 @@ productRouter.get('/search', searchController.search);
 productRouter.get('/listone/:id', productController.indexOne);
 productRouter.delete('/:id', productController.delete);
 productRouter.put('/:id', productController.update);
+productRouter.delete('/image/delete/:imageId', productController.deleteImage);
 productRouter.post(
   '/upload/image',
   multer(multerConfig).single('productImage'),
