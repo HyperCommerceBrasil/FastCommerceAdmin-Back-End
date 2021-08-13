@@ -11,4 +11,5 @@ export default interface IProductDTO {
   description: string;
   collection: Collection;
   trending: boolean;
+  isFreeShipping: boolean;
 }

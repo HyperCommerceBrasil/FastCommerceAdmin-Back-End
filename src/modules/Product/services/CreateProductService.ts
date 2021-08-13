@@ -15,6 +15,7 @@ interface IRequest {
   price_promotional: string;
   ean: string;
   is_active: boolean;
+  isFreeShipping: boolean;
 }
 
 @injectable()
@@ -38,6 +39,7 @@ class CreateProductService {
     price_promotional,
     trending,
     is_active,
+    isFreeShipping
   }: IRequest): Promise<Product> {
     const collection = await this.collectionsRepository.findById(collectionId);
 
@@ -70,6 +72,7 @@ class CreateProductService {
       ean,
       is_active,
       price_promotional,
+      isFreeShipping
     });
 
     return productCreated;

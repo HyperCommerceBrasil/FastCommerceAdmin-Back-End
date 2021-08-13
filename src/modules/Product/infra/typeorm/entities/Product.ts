@@ -56,6 +56,9 @@ class Product {
   @Column()
   quantity: number;
 
+  @Column()
+  isFreeShipping: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 

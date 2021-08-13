@@ -12,7 +12,7 @@ import CreateProductImageService from '../../../services/CreateProductImageServi
 
 import DeleteProductImageService from '../../../services/DeleteProductImageService';
 
-import uploadFiles from '@config/multer';
+
 
 export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -29,6 +29,7 @@ export default class ProductController {
       price_promotional,
       is_active,
       trending,
+      isFreeShipping
     } = request.body;
 
     const product = await createProduct.execute({
@@ -41,7 +42,9 @@ export default class ProductController {
       ean,
       price_promotional,
       trending,
+     
       is_active,
+      isFreeShipping,
     });
 
     return response.status(201).json(product);
@@ -92,6 +95,7 @@ export default class ProductController {
       is_active,
       ean,
       price_promotional,
+      isFreeShipping
     } = request.body;
 
     const product = await updateProduct.execute({
@@ -105,6 +109,7 @@ export default class ProductController {
       is_active,
       trending,
       price_promotional,
+      isFreeShipping
     });
 
     return response.status(200).json(product);
