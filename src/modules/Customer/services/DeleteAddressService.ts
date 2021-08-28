@@ -25,6 +25,8 @@ class UpdateAddressService {
     const address = await this.addressRepository.findById(addressId);
     const customer = await this.customersRepository.findById(customerId);
 
+    console.log(customer);
+
     if (!address) {
       throw new AppError('Endereço não encontrado');
     }

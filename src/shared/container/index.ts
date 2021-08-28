@@ -18,6 +18,9 @@ import ICustomersRepository from '@modules/Customer/repositories/ICustomersRepos
 import BlacklistRepositorie from './../infra/typeorm/repositories/BlacklistRepositorie';
 import IBlacklistRepositorie from './../repositories/IBlacklistRepositorie';
 
+import OrderRepositorie from '@modules/Order/infra/typeorm/repositories/OrderRepositorie';
+import IOrderRepositorie from '@modules/Order/repositories/IOrderRepositorie';
+
 import AddressRepository from '@modules/Customer/infra/typeorm/repositories/AddressRepository';
 import IAddressRepository from '@modules/Customer/repositories/IAddressRepository';
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
@@ -25,6 +28,11 @@ import IMailProvider from './providers/MailProvider/models/IMailProvider';
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IOrderRepositorie>(
+  'OrdersRepository',
+  OrderRepositorie,
 );
 
 container.registerSingleton<IAddressRepository>(

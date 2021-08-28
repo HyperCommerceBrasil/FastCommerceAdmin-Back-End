@@ -71,6 +71,7 @@ export default class AddressController {
   public async delete(request: Request, response: Response): Promise<Response> {
     const deleteAddress = container.resolve(DeleteAddressService);
     const { addressId } = request.params;
+
     const customerId = request.customer.id;
 
     await deleteAddress.execute({

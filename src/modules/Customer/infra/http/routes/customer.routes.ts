@@ -34,5 +34,10 @@ customerRouter.post(
 );
 
 customerRouter.post('/reset_password', authCustomerController.resetPassword);
+customerRouter.delete(
+  '/address/:addressId',
+  customerEnsureAuthenticate,
+  addressController.delete,
+);
 
 export default customerRouter;
