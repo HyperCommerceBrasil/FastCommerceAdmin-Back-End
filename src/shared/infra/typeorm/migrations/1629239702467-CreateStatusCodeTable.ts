@@ -40,14 +40,18 @@ export default class CreateStatusCodeTable1629239702467 implements MigrationInte
 
 
         await queryRunner.createForeignKey('orders',  new TableForeignKey({
-            columnNames: ['customerId'],
-            name: 'FkOrderCustomer',
-            referencedColumnNames: ['id'],
-            referencedTableName: 'customers',
+            columnNames: ['statusCode'],
+            name: 'FkStatusCode',
+            referencedColumnNames: ['code'],
+            referencedTableName: 'status',
         }))
+
+
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropForeignKey('orders', 'FkStatusCode');
+        await queryRunner.dropTable('status')
     }
 
 }

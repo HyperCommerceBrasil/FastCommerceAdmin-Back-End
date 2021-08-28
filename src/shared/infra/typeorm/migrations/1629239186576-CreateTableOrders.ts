@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export default class CreateTableOrders1629239186576
   implements MigrationInterface {
@@ -16,7 +21,10 @@ export default class CreateTableOrders1629239186576
           },
           {
             name: 'numberOrder',
-            type: 'varchar',
+            type: 'int',
+            isGenerated: true,
+            generationStrategy: 'increment',
+            isUnique: true,
             isNullable: false,
           },
           {
@@ -69,21 +77,22 @@ export default class CreateTableOrders1629239186576
             type: 'timestamp',
             default: 'now()',
           },
-         
         ],
       }),
     );
 
-    await queryRunner.createForeignKey('orders',  new TableForeignKey({
+    await queryRunner.createForeignKey(
+      'orders',
+      new TableForeignKey({
         columnNames: ['customerId'],
         name: 'FkOrderCustomer',
         referencedColumnNames: ['id'],
         referencedTableName: 'customers',
-      }))
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-
-    await queryRunner.dropTable('orders')
+    await queryRunner.dropTable('orders');
   }
 }

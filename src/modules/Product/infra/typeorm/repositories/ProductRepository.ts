@@ -3,6 +3,7 @@ import { getRepository, Like, Repository } from 'typeorm';
 import IProductDTO from '../../../dtos/IProductDTO';
 import Product from '../entities/Product';
 import ProductImage from '../entities/ProductImage';
+import { In } from 'typeorm';
 
 class ProductRepository implements IProductRepository {
   private ormRepository: Repository<Product>;
@@ -125,18 +126,25 @@ class ProductRepository implements IProductRepository {
     await this.ormRepositoryImage.remove(images);
   }
 
-  public async findOneImagesProduct(imageId:string): Promise<ProductImage[]> {
+  public async findOneImagesProduct(imageId: string): Promise<ProductImage[]> {
     const productImage = await this.ormRepositoryImage.find({
       where: {
-        id: imageId
-      }
-    })
-
+        id: imageId,
+      },
+    });
 
     return productImage;
   }
 
-  
+  public async findProductsByIds(productsIds: string[]): Promise<Product[]> {
+    const products = await this.ormRepository.find({
+      where: {
+        id: In(productsIds),
+      },
+    });
+
+    return products;
+  }
 }
 
 export default ProductRepository;
