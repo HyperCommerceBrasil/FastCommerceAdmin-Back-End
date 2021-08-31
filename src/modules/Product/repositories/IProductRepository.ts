@@ -5,6 +5,7 @@ import ProductImage from '../infra/typeorm/entities/ProductImage';
 export default interface IProductRepository {
   findAll(): Promise<Product[]>;
   findActiveProducts(): Promise<Product[]>;
+  findProductsByIds(productsIds: string[]): Promise<Product[]>;
   create(data: IProductDTO): Promise<Product>;
   findById(id: string): Promise<Product | undefined>;
   search(search: string): Promise<Product[]>;
