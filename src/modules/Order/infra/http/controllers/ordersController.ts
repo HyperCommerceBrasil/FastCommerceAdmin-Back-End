@@ -6,7 +6,15 @@ import ListOneOrderService from '../../../services/ListOneOrderService';
 export default class AddressAdminController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createOrder = container.resolve(CreateOrderService);
-    const { cep, city, street, uf, district, numberHouse } = request.body;
+    const {
+      cep,
+      city,
+      street,
+      uf,
+      district,
+      numberHouse,
+      products,
+    } = request.body;
 
     const customerId = request.customer.id;
 
@@ -18,6 +26,7 @@ export default class AddressAdminController {
       district,
       street,
       uf,
+      products,
     });
 
     return response.status(201).json(order);

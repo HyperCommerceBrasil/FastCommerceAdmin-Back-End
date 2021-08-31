@@ -6,7 +6,7 @@ import AppError from '@shared/errors/AppError';
 import IProductRepository from '@modules/Product/repositories/IProductRepository';
 
 interface Product {
-  id: string;
+  productId: string;
   value: number;
   quantity: number;
 }
@@ -51,14 +51,6 @@ class CreateOrderService {
       throw new AppError('Usuário não informado !');
     }
 
-    const productsIds = products.map(prod => {
-      return prod.id;
-    });
-
-    const productsFound = await this.productsRepository.findProductsByIds(
-      productsIds,
-    );
-
     const orderCreated = await this.ordersRepository.create({
       cep,
       city,
@@ -68,12 +60,10 @@ class CreateOrderService {
       street,
       uf,
       statusCode: '1',
-      products: productsFound,
+      products: products,
     });
 
-    const order = await this.ordersRepository.findOne(orderCreated.id);
-
-    return order;
+    return orderCreated;
   }
 }
 
