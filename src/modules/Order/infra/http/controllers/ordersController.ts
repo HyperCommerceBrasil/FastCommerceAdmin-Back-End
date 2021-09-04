@@ -2,6 +2,7 @@ import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 import CreateOrderService from '../../../services/CreateOrderService';
 import ListOneOrderService from '../../../services/ListOneOrderService';
+import ListAllOrdersPaginate from '../../../services/ListAllOrdersPaginate';
 
 export default class AddressAdminController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -43,5 +44,14 @@ export default class AddressAdminController {
     });
 
     return response.status(201).json(order);
+  }
+
+  public async index(request: Request, response: Response): Promise<Response> {
+    const listOrder = container.resolve(ListAllOrdersPaginate);
+    const { page } = request.query;
+
+    const order = await listOrder.execute(Number(page));
+
+    return response.status(200).json(order);
   }
 }
