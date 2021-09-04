@@ -42,6 +42,17 @@ class CreateAddressService {
       throw new AppError('Cliente informado não cadastrado :(');
     }
 
+    if (
+      street === '' ||
+      district === '' ||
+      cep === '' ||
+      city === '' ||
+      name === '' ||
+      uf === ''
+    ) {
+      throw new AppError('Informe todos os campos obrigatórios');
+    }
+
     const address = await this.addressRepository.create({
       cep,
       city,

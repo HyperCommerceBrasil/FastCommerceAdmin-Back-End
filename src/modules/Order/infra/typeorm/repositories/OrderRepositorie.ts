@@ -1,6 +1,6 @@
 import Customer from '@modules/Customer/infra/typeorm/entities/Customer';
 import IOrderRepository from '@modules/Order/repositories/IOrderRepositorie';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Transaction } from 'typeorm';
 import IOrderDTO from './../../../dto/OrderDTO';
 import Order from './../entities/Order';
 import OrderItems from './../entities/OrderItems';
@@ -11,15 +11,32 @@ class OrdersRepository implements IOrderRepository {
 
   constructor() {
     this.ormRepository = getRepository(Order);
+    this.ormRepositoryItems = getRepository(OrderItems);
   }
 
-  public async create(data: IOrderDTO): Promise<Order> {
+  public async create(data: IOrderDTO): Promise<Order | undefined> {
     const order = this.ormRepository.create(data);
     await this.ormRepository.save(order);
-    const items = this.ormRepositoryItems.create(data.products);
-    await this.ormRepositoryItems.save(items);
 
-    return order;
+    let itemCreated;
+    data.products.map(async item => {
+      await this.ormRepositoryItems.save(
+        this.ormRepositoryItems.create({
+          orderId: order.id,
+          productId: item.productId,
+          quantity: item.quantity,
+          value: item.value,
+        }),
+      );
+    });
+
+    const orderToReturn = this.ormRepository.findOne({
+      where: {
+        id: order.id,
+      },
+    });
+
+    return orderToReturn;
   }
 
   public async findByCustomer(customer: Customer): Promise<Order[]> {
@@ -41,9 +58,21 @@ class OrdersRepository implements IOrderRepository {
       where: {
         id,
       },
+      relations: ['items'],
     });
 
     return order;
+  }
+
+  public async findAllPaginate(page: number): Promise<Order[]> {
+    const skipIndex = (page - 1) * 8;
+
+    const orders = await this.ormRepository.find({
+      skip: skipIndex < 0 ? 0 : skipIndex,
+      take: 8,
+    });
+
+    return orders;
   }
 
   // public async findItems(id: string): Promise<Order | undefined> {

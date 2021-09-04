@@ -1,5 +1,10 @@
 import Customer from '@modules/Customer/infra/typeorm/entities/Customer';
-import Product from '@modules/Product/infra/typeorm/entities/Product';
+
+interface Product {
+  productId: string;
+  value: number;
+  quantity: number;
+}
 
 export default interface OrderDTO {
   customer: Customer;

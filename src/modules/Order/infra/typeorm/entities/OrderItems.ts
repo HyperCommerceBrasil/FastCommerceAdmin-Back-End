@@ -18,6 +18,12 @@ class Order {
   @PrimaryColumn()
   id: string;
 
+  @Column()
+  productId: string;
+
+  @Column()
+  orderId: string;
+
   @OneToOne(() => Product)
   @JoinColumn()
   product: Product;
