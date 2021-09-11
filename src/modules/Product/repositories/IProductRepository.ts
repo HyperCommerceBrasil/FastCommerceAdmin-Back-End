@@ -20,4 +20,5 @@ export default interface IProductRepository {
     key: string,
   ): Promise<ProductImage>;
   deleteImageProduct(images: ProductImage[]): Promise<void>;
+  findByIdPrivate(id: string): Promise<Product | undefined>;
 }

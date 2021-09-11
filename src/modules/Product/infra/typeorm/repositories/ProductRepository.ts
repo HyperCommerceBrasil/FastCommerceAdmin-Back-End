@@ -33,6 +33,14 @@ class ProductRepository implements IProductRepository {
     return product;
   }
 
+  public async findByIdPrivate(id: string): Promise<Product | undefined> {
+    const product = this.ormRepository.findOne(id, {
+      relations: ['supplier'],
+    });
+
+    return product;
+  }
+
   public async search(search: string): Promise<Product[]> {
     const products = this.ormRepository.find({
       where: [{ name: Like(`%${search}%`) }, { ean: Like(`%${search}%`) }],
