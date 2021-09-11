@@ -12,6 +12,7 @@ import {
 
 import Collection from '@modules/Collection/infra/typeorm/entities/Collection';
 import ProductImage from './ProductImage';
+import Supplier from '@modules/Supplier/infra/typeorm/entities/Supplier';
 
 @Entity('products')
 class Product {
@@ -27,6 +28,13 @@ class Product {
 
   @Column()
   price: number;
+
+  @Column()
+  supplierId: number;
+
+  @OneToOne(() => Supplier)
+  @JoinColumn()
+  supplier: Supplier;
 
   @Column()
   trending: boolean;
