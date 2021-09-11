@@ -44,14 +44,14 @@ class Order {
   @Column()
   city: string;
 
-  @OneToOne(() => Status)
+  @OneToOne(() => Status, { eager: true })
   @JoinColumn({
     name: 'statusCode',
     referencedColumnName: 'code',
   })
   status: Status;
 
-  @ManyToMany(() => Product, { eager: true })
+  @ManyToMany(() => Product)
   @JoinTable({
     name: 'ordersItems', // table name for the junction table of this relation
     joinColumn: {

@@ -58,9 +58,21 @@ class OrdersRepository implements IOrderRepository {
       where: {
         id,
       },
+      relations: ['items'],
     });
 
     return order;
+  }
+
+  public async findAllPaginate(page: number): Promise<Order[]> {
+    const skipIndex = (page - 1) * 8;
+
+    const orders = await this.ormRepository.find({
+      skip: skipIndex < 0 ? 0 : skipIndex,
+      take: 8,
+    });
+
+    return orders;
   }
 
   // public async findItems(id: string): Promise<Order | undefined> {

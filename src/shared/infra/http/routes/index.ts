@@ -21,7 +21,7 @@ routes.use('/customers', customerRouter);
 routes.use('/admin/customers', ensureAuthenticate, customerAdminRouter);
 routes.use('/auth', authRouter);
 routes.use('/public/products', publicProductsRouter);
-routes.use('/orders', customerEnsureAuthenticate, ordersRouter);
+routes.use('/orders', ordersRouter);
 
 routes.use('/suppliers', ensureAuthenticate, supplierRouter);
 
