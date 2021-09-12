@@ -17,6 +17,7 @@ interface IRequest {
   collectionId: string;
   isFreeShipping: boolean;
   supplierId: string;
+  typeStorage: string;
 }
 
 @injectable()
@@ -42,6 +43,7 @@ class CreateProductService {
     trending,
     isFreeShipping,
     supplierId,
+    typeStorage,
   }: IRequest): Promise<Product> {
     const product = await this.productsRepository.findById(id);
 
@@ -62,6 +64,7 @@ class CreateProductService {
     product.details = details;
     product.isFreeShipping = isFreeShipping;
     product.supplierId = supplierId;
+    product.typeStorage = typeStorage;
 
     await this.productsRepository.update(product);
 

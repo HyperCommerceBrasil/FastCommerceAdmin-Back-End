@@ -13,4 +13,5 @@ export default interface IProductDTO {
   trending: boolean;
   isFreeShipping: boolean;
   supplierId: string;
+  typeStorage: string;
 }

@@ -28,6 +28,7 @@ export default class ProductController {
       trending,
       isFreeShipping,
       supplierId,
+      typeStorage,
     } = request.body;
 
     const product = await createProduct.execute({
@@ -43,6 +44,7 @@ export default class ProductController {
       supplierId,
       is_active,
       isFreeShipping,
+      typeStorage,
     });
 
     return response.status(201).json(product);
@@ -95,6 +97,7 @@ export default class ProductController {
       price_promotional,
       isFreeShipping,
       supplierId,
+      typeStorage,
     } = request.body;
 
     const product = await updateProduct.execute({
@@ -110,6 +113,7 @@ export default class ProductController {
       price_promotional,
       isFreeShipping,
       supplierId,
+      typeStorage,
     });
 
     return response.status(200).json(product);

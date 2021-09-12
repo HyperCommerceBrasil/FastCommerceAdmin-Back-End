@@ -30,6 +30,9 @@ class Product {
   price: number;
 
   @Column()
+  typeStorage: string;
+
+  @Column()
   supplierId: string;
 
   @OneToOne(() => Supplier)
