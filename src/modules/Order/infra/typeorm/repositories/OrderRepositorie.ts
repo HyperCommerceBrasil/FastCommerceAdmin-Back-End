@@ -5,6 +5,17 @@ import IOrderDTO from './../../../dto/OrderDTO';
 import Order from './../entities/Order';
 import OrderItems from './../entities/OrderItems';
 
+interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string;
+  value: number;
+  quantity: number;
+  supplierid: string;
+  suppliername: string;
+  typeStorage: string;
+}
+
 class OrdersRepository implements IOrderRepository {
   private ormRepository: Repository<Order>;
   private ormRepositoryItems: Repository<OrderItems>;
@@ -50,10 +61,6 @@ class OrdersRepository implements IOrderRepository {
   }
 
   public async findOne(id: string): Promise<Order | undefined> {
-    // const order = await this.ormRepository.query(
-    //   `select  o."numberOrder", st.description as status,  o.* from orders o left join status st ON st.code = o."statusCode" where o.id = '${id}'`,
-    // );
-
     const order = await this.ormRepository.findOne({
       where: {
         id,
@@ -62,6 +69,16 @@ class OrdersRepository implements IOrderRepository {
     });
 
     return order;
+  }
+
+  public async findItemsWithSupplier(id: string): Promise<OrderItem[]> {
+    const orderItems = await this.ormRepositoryItems
+      .query(`select oi.*, s.id as supplierId, s.name as supplierName, "typeStorage" from "ordersItems" oi 
+    join products p on p.id = oi."productId"
+    join suppliers s on s.id  = p."supplierId"
+    where oi."orderId" = '${id}'`);
+
+    return orderItems;
   }
 
   public async findAllPaginate(page: number): Promise<Order[]> {
