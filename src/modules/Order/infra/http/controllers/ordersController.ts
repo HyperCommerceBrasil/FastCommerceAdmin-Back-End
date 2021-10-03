@@ -4,9 +4,13 @@ import CreateOrderService from '../../../services/CreateOrderService';
 import ListOneOrderService from '../../../services/ListOneOrderService';
 import ListAllOrdersPaginate from '../../../services/ListAllOrdersPaginate';
 
+import CreateShipmentService from '@modules/Shipment/services/CreateShipmentService';
+
 export default class AddressAdminController {
   public async create(request: Request, response: Response): Promise<Response> {
     const createOrder = container.resolve(CreateOrderService);
+    const createShipments = container.resolve(CreateShipmentService);
+
     const {
       cep,
       city,
@@ -30,14 +34,16 @@ export default class AddressAdminController {
       products,
     });
 
-    return response.status(201).json(order);
+    const shipmentOrder = await createShipments.execute({
+      orderId: order.id,
+    });
+
+    return response.status(201).json(shipmentOrder);
   }
 
   public async getOne(request: Request, response: Response): Promise<Response> {
     const listOrder = container.resolve(ListOneOrderService);
     const { orderId } = request.params;
-
-    const customerId = request.customer.id;
 
     const order = await listOrder.execute({
       orderId,

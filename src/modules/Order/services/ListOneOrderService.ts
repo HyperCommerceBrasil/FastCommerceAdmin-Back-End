@@ -19,9 +19,32 @@ class ListObeOrderService {
   ) {}
 
   public async execute({ orderId }: IRequest) {
-    const order = await this.ordersRepository.findOne(orderId);
+    let order = await this.ordersRepository.findOne(orderId);
+    const items = await this.ordersRepository.findItems(orderId);
 
-    return order;
+    let total = 0;
+
+    items.map(it => {
+      total += it.quantity * it.value;
+    });
+
+    if (order?.shipments.shipmentItems) {
+      order?.shipments.shipmentItems.map(shipItem => {
+        items?.map(it => {
+          if (it.id === shipItem.productId) {
+            shipItem = {
+              ...shipItem,
+            };
+          }
+        });
+      });
+    }
+
+    console.log(order);
+
+    const orderReturn = { ...order, total: total };
+
+    return orderReturn;
   }
 }
 

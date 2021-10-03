@@ -1,9 +1,11 @@
 import Order from '@modules/Order/infra/typeorm/entities/Order';
+import ShipmentItem from './ShipmentItem';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
@@ -28,6 +30,11 @@ class Shipment {
   @OneToOne(() => Order)
   @JoinColumn()
   order: Order;
+
+  @OneToMany(() => ShipmentItem, shipemntItem => shipemntItem.shipment, {
+    eager: true,
+  })
+  shipmentItems: ShipmentItem[];
 
   @CreateDateColumn()
   created_at: Date;

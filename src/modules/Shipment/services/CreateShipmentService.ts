@@ -8,10 +8,15 @@ interface IRequest {
   orderId: string;
 }
 
+interface ItemShipping {
+  productId: string;
+  orderItemId: string;
+}
+
 interface Supplier {
   id: string;
   name: string;
-  items: string[];
+  items: ItemShipping[];
 }
 
 interface OrderItem {
@@ -25,7 +30,7 @@ interface OrderItem {
 }
 
 @injectable()
-class CreateUserService {
+class CreateShipmentService {
   constructor(
     @inject('ShipmentRepository')
     private shipmentRepository: IShipmentRepository,
@@ -36,13 +41,22 @@ class CreateUserService {
 
   public async execute({ orderId }: IRequest) {
     const order = await this.ordersRepository.findOne(orderId);
-    const order2 = await this.ordersRepository.findOne(orderId);
+    const orderItems = await this.ordersRepository.findItems(orderId);
+
+    console.log('Order Items');
+    console.log(orderItems.length);
+
+    const orderWithItems = await this.ordersRepository.findOrderWithItems(
+      orderId,
+    );
+
+    console.log(orderWithItems?.items.length);
 
     const orderItemsBySupplier = await this.ordersRepository.findItemsWithSupplier(
       orderId,
     );
 
-    if (!orderItemsBySupplier) {
+    if (!order) {
       throw new AppError('Pedido não existe');
     }
 
@@ -67,7 +81,6 @@ class CreateUserService {
             name: product.suppliername,
             items: [],
           });
-        } else {
         }
       }
 
@@ -75,22 +88,52 @@ class CreateUserService {
     });
 
     // Separa os itens Dropshipping
-    const dropshippingItems = order2?.items.filter(prod => {
-      return prod.typeStorage === 'Dropshipping';
+    const dropshippingItems = orderItems.filter(ordItem => {
+      return ordItem.product.typeStorage === 'Dropshipping';
     });
+
+    // console.log('items dropshipping qtd');
+    // console.log(dropshippingItems.length);
+
+    // console.log('Suppliers');
+    // console.log(suppliersOrder);
 
     // Cria os splits
     suppliersOrder.map(supplierOrder => {
-      console.log(supplierOrder.name);
-      dropshippingItems?.forEach(prod => {
-        if (prod.supplierId === supplierOrder.id) {
-          supplierOrder.items.push(prod.id);
+      dropshippingItems?.map(ordItem => {
+        if (ordItem.product.supplierId === supplierOrder.id) {
+          supplierOrder.items.push({
+            productId: ordItem.productId,
+            orderItemId: ordItem.id,
+          });
         }
       });
     });
 
-    return suppliersOrder;
+    suppliersOrder.map(async supplierMapped => {
+      let itemsShipping = supplierMapped.items.map(itemSupplier => {
+        return itemSupplier;
+      });
+
+      console.log(supplierMapped.name);
+      console.log(itemsShipping);
+
+      await this.shipmentRepository.create({
+        orderId: order?.id,
+        items: itemsShipping,
+        shipmentNumber:
+          order?.numberOrder +
+          '-' +
+          Math.round(Math.random() * Number(order?.numberOrder)),
+      });
+    });
+
+    console.log('---Fim---');
+
+    const orderCreated = await this.ordersRepository.findOne(orderId);
+
+    return orderCreated;
   }
 }
 
-export default CreateUserService;
+export default CreateShipmentService;

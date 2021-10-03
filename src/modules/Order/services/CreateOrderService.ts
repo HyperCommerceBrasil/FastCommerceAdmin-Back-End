@@ -49,7 +49,9 @@ class CreateOrderService {
   }: IRequest) {
     const customer = await this.customersRepository.findById(customerId);
 
-    const createShipment = container.resolve(CreateShipmentService);
+    const productsIds = products.map(prd => {
+      return prd.productId;
+    });
 
     if (!customer) {
       throw new AppError('Usuário não informado !');
@@ -73,14 +75,7 @@ class CreateOrderService {
       );
     }
 
-    //Gera Shipment
-    const suppliers = await createShipment.execute({
-      orderId: orderCreated.id,
-    });
-
-    //Regra de Split
-
-    return suppliers;
+    return orderCreated;
   }
 }
 

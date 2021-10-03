@@ -25,6 +25,11 @@ export default class CreateShipmentsItemsTable1631482550300
             isNullable: false,
           },
           {
+            name: 'productId',
+            type: 'uuid',
+            isNullable: true,
+          },
+          {
             name: 'orderItemId',
             type: 'uuid',
             isNullable: true,
@@ -71,8 +76,18 @@ export default class CreateShipmentsItemsTable1631482550300
     await queryRunner.createForeignKey(
       'shipmentsItems',
       new TableForeignKey({
+        columnNames: ['productId'],
+        name: 'FkShipmentIProduct',
+        referencedColumnNames: ['id'],
+        referencedTableName: 'products',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'shipmentsItems',
+      new TableForeignKey({
         columnNames: ['orderItemId'],
-        name: 'FkShipmentItems',
+        name: 'FkShipmentOrdemItem',
         referencedColumnNames: ['id'],
         referencedTableName: 'ordersItems',
       }),

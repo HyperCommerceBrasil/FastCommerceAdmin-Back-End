@@ -1,6 +1,11 @@
 import Customer from '@modules/Customer/infra/typeorm/entities/Customer';
 import IOrderRepository from '@modules/Order/repositories/IOrderRepositorie';
-import { getRepository, Repository, Transaction } from 'typeorm';
+import {
+  getRepository,
+  Repository,
+  Transaction,
+  TransactionManager,
+} from 'typeorm';
 import IOrderDTO from './../../../dto/OrderDTO';
 import Order from './../entities/Order';
 import OrderItems from './../entities/OrderItems';
@@ -22,36 +27,50 @@ class OrdersRepository implements IOrderRepository {
 
   constructor() {
     this.ormRepository = getRepository(Order);
+
     this.ormRepositoryItems = getRepository(OrderItems);
   }
 
   public async create(data: IOrderDTO): Promise<Order | undefined> {
-    const order = this.ormRepository.create(data);
+    const order = this.ormRepository.create({
+      cep: data.cep,
+      city: data.city,
+      statusCode: data.statusCode,
+      district: data.district,
+      uf: data.uf,
+      numberHouse: data.numberHouse,
+      customer: data.customer,
+      street: data.street,
+    });
+
     await this.ormRepository.save(order);
 
-    let itemCreated;
-    data.products.map(async item => {
-      await this.ormRepositoryItems.save(
-        this.ormRepositoryItems.create({
+    await Promise.all(
+      data.products.map(async item => {
+        const orderItem = this.ormRepositoryItems.create({
           orderId: order.id,
           productId: item.productId,
           quantity: item.quantity,
           value: item.value,
-        }),
-      );
-    });
+        });
+        await this.ormRepositoryItems.save(orderItem);
+      }),
+    );
 
-    const orderToReturn = this.ormRepository.findOne({
+    const orderToReturn = await this.ormRepository.findOne({
       where: {
         id: order.id,
       },
     });
 
+    console.log('cria oirdem');
+    console.log(orderToReturn);
+
     return orderToReturn;
   }
 
   public async findByCustomer(customer: Customer): Promise<Order[]> {
-    const orders = this.ormRepository.find({
+    const orders = await this.ormRepository.find({
       where: {
         customer: customer,
       },
@@ -65,7 +84,6 @@ class OrdersRepository implements IOrderRepository {
       where: {
         id,
       },
-      relations: ['items'],
     });
 
     return order;
@@ -92,11 +110,30 @@ class OrdersRepository implements IOrderRepository {
     return orders;
   }
 
-  // public async findItems(id: string): Promise<Order | undefined> {
-  //   const order = await this.ormRepository.find({})
+  public async findItems(orderId: string): Promise<OrderItems[]> {
+    const items = await this.ormRepositoryItems.find({
+      where: {
+        orderId: orderId,
+      },
+    });
 
-  //   return order;
-  // }
+    console.log(orderId);
+    console.log('Do repositorio');
+    console.log(items.length);
+
+    return items;
+  }
+
+  public async findOrderWithItems(orderId: string): Promise<Order | undefined> {
+    const order = await this.ormRepository.findOne({
+      where: {
+        id: orderId,
+      },
+      relations: ['items'],
+    });
+
+    return order;
+  }
 }
 
 export default OrdersRepository;

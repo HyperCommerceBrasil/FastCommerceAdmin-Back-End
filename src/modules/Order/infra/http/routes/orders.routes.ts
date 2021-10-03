@@ -10,11 +10,18 @@ const ordersController = new OrdersController();
 const ordersRouter = Router();
 
 ordersRouter.post('/', customerEnsureAuthenticate, ordersController.create);
-ordersRouter.post(
+ordersRouter.get(
+  '/admin/:orderId',
+  ensureAuthenticate,
+  ordersController.getOne,
+);
+
+ordersRouter.get(
   '/:orderId',
   customerEnsureAuthenticate,
   ordersController.getOne,
 );
+
 ordersRouter.get('/', ensureAuthenticate, ordersController.index);
 
 export default ordersRouter;

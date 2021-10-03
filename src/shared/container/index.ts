@@ -36,11 +36,6 @@ container.registerSingleton<IUsersRepository>(
   UsersRepository,
 );
 
-container.registerSingleton<IShipmentRepository>(
-  'ShipmentRepository',
-  ShipmentRepositorie,
-);
-
 container.registerSingleton<ISupplierRepository>(
   'SuppliersRepository',
   SupplierRepository,
@@ -79,6 +74,11 @@ container.registerSingleton<ICollectionRepository>(
 container.registerSingleton<IProductRepository>(
   'ProductsRepository',
   ProductRepository,
+);
+
+container.registerSingleton<IShipmentRepository>(
+  'ShipmentRepository',
+  ShipmentRepositorie,
 );
 
 container.registerInstance<IMailProvider>(
