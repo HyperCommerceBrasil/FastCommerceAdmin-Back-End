@@ -24,6 +24,9 @@ import IOrderRepositorie from '@modules/Order/repositories/IOrderRepositorie';
 import SupplierRepository from '@modules/Supplier/infra/typeorm/repositories/SupplierRepository';
 import ISupplierRepository from '@modules/Supplier/repositories/ISupplierRepository';
 
+import ShipmentRepositorie from '@modules/Shipment/infra/typeorm/repositories/ShipmentRepositorie';
+import IShipmentRepository from '@modules/Shipment/repositories/IShipmentRepository';
+
 import AddressRepository from '@modules/Customer/infra/typeorm/repositories/AddressRepository';
 import IAddressRepository from '@modules/Customer/repositories/IAddressRepository';
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
@@ -31,6 +34,11 @@ import IMailProvider from './providers/MailProvider/models/IMailProvider';
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<ISupplierRepository>(
+  'SuppliersRepository',
+  SupplierRepository,
 );
 
 container.registerSingleton<ISupplierRepository>(
@@ -66,6 +74,11 @@ container.registerSingleton<ICollectionRepository>(
 container.registerSingleton<IProductRepository>(
   'ProductsRepository',
   ProductRepository,
+);
+
+container.registerSingleton<IShipmentRepository>(
+  'ShipmentRepository',
+  ShipmentRepositorie,
 );
 
 container.registerInstance<IMailProvider>(

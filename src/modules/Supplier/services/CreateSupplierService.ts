@@ -18,8 +18,8 @@ export default class CreateSupplierService {
   public async execute({ cnpj, name }: IRequest): Promise<Supplier> {
     const sameCNPJ = await this.supplierRepository.findByCnpj(cnpj);
 
-    if (sameCNPJ) {
-      throw new AppError('Ja existe um fornecedor com este CNPJ');
+    if (sameCNPJ && sameCNPJ.cnpj !== '') {
+      throw new AppError('CNPJ ja existe, por favor informe outro !');
     }
 
     const supplier = await this.supplierRepository.create({

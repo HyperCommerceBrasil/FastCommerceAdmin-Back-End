@@ -9,10 +9,7 @@ import UpdateProductService from '../../../services/UpdateProductService';
 
 import CreateProductImageService from '../../../services/CreateProductImageService';
 
-
 import DeleteProductImageService from '../../../services/DeleteProductImageService';
-
-
 
 export default class ProductController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -29,7 +26,9 @@ export default class ProductController {
       price_promotional,
       is_active,
       trending,
-      isFreeShipping
+      isFreeShipping,
+      supplierId,
+      typeStorage,
     } = request.body;
 
     const product = await createProduct.execute({
@@ -42,9 +41,10 @@ export default class ProductController {
       ean,
       price_promotional,
       trending,
-     
+      supplierId,
       is_active,
       isFreeShipping,
+      typeStorage,
     });
 
     return response.status(201).json(product);
@@ -95,7 +95,9 @@ export default class ProductController {
       is_active,
       ean,
       price_promotional,
-      isFreeShipping
+      isFreeShipping,
+      supplierId,
+      typeStorage,
     } = request.body;
 
     const product = await updateProduct.execute({
@@ -109,7 +111,9 @@ export default class ProductController {
       is_active,
       trending,
       price_promotional,
-      isFreeShipping
+      isFreeShipping,
+      supplierId,
+      typeStorage,
     });
 
     return response.status(200).json(product);
@@ -141,13 +145,15 @@ export default class ProductController {
     });
   }
 
-
-  public async deleteImage(request: Request, response: Response): Promise<Response> {
+  public async deleteImage(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
     const deleteImageProduct = container.resolve(DeleteProductImageService);
 
     const { imageId } = request.params;
 
-     await deleteImageProduct.execute({imageId});
+    await deleteImageProduct.execute({ imageId });
 
     return response.status(200).json({});
   }

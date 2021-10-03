@@ -10,8 +10,8 @@ class CreateProductService {
   ) {}
 
   public async execute(productId: string): Promise<Product | undefined> {
-    const product = await this.productsRepository.findById(productId);
-    
+    const product = await this.productsRepository.findByIdPrivate(productId);
+
     return product;
   }
 }

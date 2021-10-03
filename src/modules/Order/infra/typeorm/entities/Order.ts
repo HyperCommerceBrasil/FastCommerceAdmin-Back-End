@@ -14,7 +14,7 @@ import {
 
 import Customer from '@modules/Customer/infra/typeorm/entities/Customer';
 import Status from '@modules/Order/infra/typeorm/entities/Status';
-import OrderItems from './OrderItems';
+import Shipment from '@modules/Shipment/infra/typeorm/entities/Shipment';
 import Product from '@modules/Product/infra/typeorm/entities/Product';
 
 @Entity('orders')
@@ -64,6 +64,9 @@ class Order {
     },
   })
   items: Product[];
+
+  @OneToMany(() => Shipment, shipment => shipment.order, { eager: true })
+  shipments: Shipment;
 
   @Column()
   cep: string;

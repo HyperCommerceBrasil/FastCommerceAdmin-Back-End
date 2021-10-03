@@ -4,6 +4,8 @@ import IOrdersRepository from './../repositories/IOrderRepositorie';
 import ICustomersRepository from '@modules/Customer/repositories/ICustomersRepository';
 import AppError from '@shared/errors/AppError';
 import IProductRepository from '@modules/Product/repositories/IProductRepository';
+import CreateShipmentService from '@modules/Shipment/services/CreateShipmentService';
+import { container } from 'tsyringe';
 
 interface Product {
   productId: string;
@@ -47,6 +49,10 @@ class CreateOrderService {
   }: IRequest) {
     const customer = await this.customersRepository.findById(customerId);
 
+    const productsIds = products.map(prd => {
+      return prd.productId;
+    });
+
     if (!customer) {
       throw new AppError('Usuário não informado !');
     }
@@ -62,6 +68,12 @@ class CreateOrderService {
       statusCode: '1',
       products: products,
     });
+
+    if (!orderCreated) {
+      throw new AppError(
+        'Ocorreu um erro ao gerar o pedido, por favor tente novamente',
+      );
+    }
 
     return orderCreated;
   }

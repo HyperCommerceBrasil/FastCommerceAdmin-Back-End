@@ -24,8 +24,11 @@ class Order {
   @Column()
   orderId: string;
 
-  @OneToOne(() => Product)
-  @JoinColumn()
+  @OneToOne(() => Product, { eager: true })
+  @JoinColumn({
+    name: 'productId',
+    referencedColumnName: 'id',
+  })
   product: Product;
 
   @OneToOne(() => Order)

@@ -30,7 +30,10 @@ class Product {
   price: number;
 
   @Column()
-  supplierId: number;
+  typeStorage: string;
+
+  @Column()
+  supplierId: string;
 
   @OneToOne(() => Supplier)
   @JoinColumn()
