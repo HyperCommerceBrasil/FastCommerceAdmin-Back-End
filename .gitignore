@@ -4,10 +4,3 @@ node_modules/
 build/
 tmp/
 temp/
-ormconfig.json
-dist/
-yarn.lock
-package.lock.json
-ormconfig.prod.json
-tmp
-.env
